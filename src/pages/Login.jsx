@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import useForm from '../hooks/useForm';
+import saveOnLocalStorage from '../services/localStorage';
 
-function Login() {
+function Login({ history }) {
   const emailInput = useForm('');
   const passwordInput = useForm('');
   const [isDisabled, setIsDisabled] = useState(true);
@@ -20,6 +21,10 @@ function Login() {
     } else {
       setIsDisabled(true);
     }
+  };
+
+  const saveUser = () => {
+    saveOnLocalStorage('user', { email: emailInput.value });
   };
   return (
     <form>
@@ -52,6 +57,10 @@ function Login() {
         data-testid="login-submit-btn"
         type="button"
         disabled={ isDisabled }
+        onClick={ () => {
+          saveUser();
+          history.push('/meals');
+        } }
       >
         Enter
 
@@ -59,5 +68,7 @@ function Login() {
     </form>
   );
 }
+
+Login.propTypes = {}.isRequired;
 
 export default Login;

@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
 
-function SearchBar() {
+function SearchBar({ pageType }) {
   const [searchType, setSearchType] = useState('ingredient');
   const [searchTerm, setSearchTerm] = useState('');
 
+  const endpointMap = {
+    food: {
+      ingredient: 'https://www.themealdb.com/api/json/v1/1/filter.php?i=',
+      name: 'https://www.themealdb.com/api/json/v1/1/search.php?s=',
+      'first-letter': 'https://www.themealdb.com/api/json/v1/1/search.php?f=',
+    },
+    drink: {
+      ingredient: 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=',
+      name: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
+      'first-letter': 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=',
+    },
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let endpoint = '';
     const search = searchTerm.trim();
-    if (searchType === 'ingredient') {
-      endpoint = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`;
-    } else if (searchType === 'name') {
-      endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`;
-    } else if (searchType === 'first-letter') {
-      if (search.length > 1) {
-        global.alert('Sua pesquisa deve ter apenas 1 (um) caractere');
-        return;
-      }
-      endpoint = `https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`;
+
+    if (searchType === 'first-letter' && search.length > 1) {
+      global.alert('Sua pesquisa deve ter apenas 1 (um) caractere');
+      return;
     }
+    const endpoint = endpointMap[pageType][searchType] + search;
+
     try {
       const response = await fetch(endpoint);
       const data = await response.json();
@@ -26,6 +34,7 @@ function SearchBar() {
       // handle the data here
     } catch (error) {
       // handle the error here
+      console.log(error);
     }
   };
 
@@ -86,5 +95,7 @@ function SearchBar() {
     </form>
   );
 }
+
+SearchBar.propTypes = {}.isRequired;
 
 export default SearchBar;

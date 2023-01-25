@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useForm from '../hooks/useForm';
+import saveOnLocalStorage from '../services/localStorage';
 
-function Login() {
+function Login({ history }) {
   const emailInput = useForm('');
   const passwordInput = useForm('');
-  // const validEmail = email.toLocaleLowerCase()
-  //   .match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/);
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const validateEmail = (email) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
+
+  const validateLogin = () => {
+    const validEmail = validateEmail(emailInput.value);
+
+    const validatePassword = passwordInput.value.length > Number('5');
+    if (validEmail && validatePassword) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  };
+
+  const saveUser = () => {
+    saveOnLocalStorage('user', { email: emailInput.value });
+  };
   return (
     <form>
       <label htmlFor="email-input">
@@ -14,7 +34,10 @@ function Login() {
           type="email"
           data-testid="email-input"
           value={ emailInput.value }
-          onChange={ emailInput.handleChange }
+          onChange={ (e) => {
+            emailInput.handleChange(e);
+            validateLogin();
+          } }
         />
       </label>
       <label htmlFor="password-input">
@@ -23,12 +46,29 @@ function Login() {
           type="password"
           data-testid="password-input"
           value={ passwordInput.value }
-          onChange={ passwordInput.handleChange }
+          onChange={ (e) => {
+            passwordInput.handleChange(e);
+            validateLogin();
+          } }
         />
       </label>
-      <button id="" data-testid="login-submit-btn" type="button">Enter</button>
+      <button
+        id=""
+        data-testid="login-submit-btn"
+        type="button"
+        disabled={ isDisabled }
+        onClick={ () => {
+          saveUser();
+          history.push('/meals');
+        } }
+      >
+        Enter
+
+      </button>
     </form>
   );
 }
+
+Login.propTypes = {}.isRequired;
 
 export default Login;

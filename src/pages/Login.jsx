@@ -4,7 +4,6 @@ import useForm from '../hooks/useForm';
 function Login() {
   const emailInput = useForm('');
   const passwordInput = useForm('');
-
   // const validEmail = email.toLocaleLowerCase()
   //   .match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/);
   return (

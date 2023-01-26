@@ -2,7 +2,7 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
-function Home({ history }) {
+function Recipes({ history }) {
   if (history.location.pathname === '/meals') {
     return (
       <div>
@@ -20,6 +20,6 @@ function Home({ history }) {
   );
 }
 
-Home.propTypes = {}.isrequired;
+Recipes.propTypes = {}.isrequired;
 
-export default Home;
+export default Recipes;

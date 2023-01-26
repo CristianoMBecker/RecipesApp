@@ -20,4 +20,6 @@ function Home({ history }) {
   );
 }
 
+Home.propTypes = {}.isrequired;
+
 export default Home;

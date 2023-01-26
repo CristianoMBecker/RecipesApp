@@ -46,32 +46,37 @@ function Recipes({ history }) {
   return (
     <div>
       <Header title={ pathname === '/drinks' ? 'Drinks' : 'Meals' } showSearch />
+      {
+        categories.map(({ strCategory }, index) => {
+          if (index > Number('4')) {
+            return;
+          }
+          return (
+            <button
+              key={ strCategory }
+              data-testid={ `${strCategory}-category-filter` }
+            >
+              {strCategory }
 
-      <section className="categories-content">
-        {
-          categories.map(({ strCategory }, index) => {
-            if (index > Number('4')) {
-              return;
-            }
-            return (
-              <button
-                key={ strCategory }
-                data-testid={ `${strCategory}-category-filter` }
-              >
-                { strCategory }
-
-              </button>
-            );
-          })
-        }
-      </section>
+            </button>
+          );
+        })
+      }
       {
         recipes.map((recipe, index) => {
           if (index > Number('11')) {
             return;
           }
+          const nameItem = recipe.strMeal || recipe.strDrink;
+          const image = recipe.strMealThumb || recipe.strDrinkThumb;
           return (
-            <CardRecipe key={ index } />
+            <CardRecipe
+              key={ recipe.idDrink || recipe.idMeal }
+              index={ index }
+              nameItem={ nameItem }
+              image={ image }
+              item={ { idDrink: recipe.idDrink, idMeal: recipe.idMeal } }
+            />
           );
         })
       }

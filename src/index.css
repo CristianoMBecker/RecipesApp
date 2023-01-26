@@ -12,6 +12,11 @@ code {
     monospace;
 }
 
+header{
+  background-color: lightblue;
+  width: 100%;
+}
+
 footer {
   background-color: lightblue;
   height: 40px;

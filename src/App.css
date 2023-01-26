@@ -66,3 +66,16 @@
     transform: rotate(-10deg);
   }
 }
+
+header {
+  background-color: lightblue;
+  width: 100%;
+}
+
+footer {
+  background-color: lightblue;
+  height: 40px;
+  position: fixed;
+  top: 600px;
+  width: 100%;
+}

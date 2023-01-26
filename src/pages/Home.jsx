@@ -2,7 +2,16 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
-function Drinks() {
+function Home({ history }) {
+  if (history.location.pathname === '/meals') {
+    return (
+      <div>
+        <Header title="Meals" showSearch />
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Header title="Drinks" showSearch />
@@ -11,4 +20,4 @@ function Drinks() {
   );
 }
 
-export default Drinks;
+export default Home;

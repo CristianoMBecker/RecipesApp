@@ -1,9 +1,9 @@
 import React from 'react';
 
-function CardRecipes() {
+function CardRecipe() {
   return (
-    <div>CardRecipes</div>
+    <div>CardRecipe</div>
   );
 }
 
-export default CardRecipes;
+export default CardRecipe;

@@ -85,3 +85,11 @@ footer {
   padding: 5px;
   width: 250px;
 }
+
+button {
+  border: 1px solid black;
+}
+
+.button-selected {
+  border: 2px solid green;
+}

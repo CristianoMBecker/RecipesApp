@@ -5,7 +5,7 @@ function CardRecipe({ index, nameItem, image, item }) {
   return (
     <Link
       className="card"
-      to={ `/${item.idDrink ? 'bebidas' : 'comidas'}/${item.idDrink || item.idMeal}` }
+      to={ `/${item.idDrink ? 'drinks' : 'meals'}/${item.idDrink || item.idMeal}` }
     >
       <div
         data-testid={ `${index}-recipe-card` }

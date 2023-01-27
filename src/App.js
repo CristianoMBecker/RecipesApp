@@ -7,7 +7,6 @@ import Recipes from './pages/Recipes';
 import Profile from './pages/Profile';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import DoneRecipes from './pages/DoneRecipes';
-import Recipes from './pages/Recipes';
 
 function App() {
   return (

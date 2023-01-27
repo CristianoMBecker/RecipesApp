@@ -8,7 +8,7 @@ function RecipesProvider({ children }) {
     recipes,
     setRecipes,
 
-  }), [recipes, filteredRecipes]);
+  }), [recipes]);
   return (
     <RecipesContext.Provider value={ values }>
       {children}

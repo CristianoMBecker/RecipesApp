@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 function SearchBar({ pageType }) {
-  const [searchType, setSearchType] = useState('ingredient');
+  const [searchType, setSearchType] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const history = useHistory();
 
   const endpointMap = {
     food: {
@@ -17,24 +19,41 @@ function SearchBar({ pageType }) {
     },
   };
 
+  const drinkCondition = (response) => {
+    if (response.drinks && response.drinks.length === 1) {
+      history.push(`/drinks/${response.drinks[0].idDrink}`);
+    } else if (!response.drinks || response.drinks.length === 0) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+  };
+
+  const foodCondition = (response) => {
+    if (response.meals && response.meals.length === 1) {
+      history.push(`/meals/${response.meals[0].idMeal}`);
+    } else if (!response.food || response.food.length === 0) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const search = searchTerm.trim();
+    if (searchType === 'first-letter' && search.length !== 1) {
+      global.alert('Your search must have only 1 (one) character');
+    } else {
+      if (pageType === 'Meals') {
+        const data = await fetch(endpointMap.food[searchType] + search);
+        const response = await data.json();
+        console.log(response);
+        foodCondition(response);
+      }
 
-    if (searchType === 'first-letter' && search.length > 1) {
-      global.alert('Sua pesquisa deve ter apenas 1 (um) caractere');
-      return;
-    }
-    const endpoint = endpointMap[pageType][searchType] + search;
-
-    try {
-      const response = await fetch(endpoint);
-      const data = await response.json();
-      console.log(data);
-      // handle the data here
-    } catch (error) {
-      // handle the error here
-      console.log(error);
+      if (pageType === 'Drinks') {
+        const data = await fetch(endpointMap.drink[searchType] + search);
+        const response = await data.json();
+        console.log(response);
+        drinkCondition(response);
+      }
     }
   };
 

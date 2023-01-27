@@ -21,14 +21,14 @@ function SearchBar({ pageType }) {
 
   const drinkCondition = (response) => {
     if (response.drinks && response.drinks.length === 1) {
-      history.push(`/drink/${response.drinks[0].idDrink}`);
+      history.push(`/drinks/${response.drinks[0].idDrink}`);
     } else if (!response.drinks || response.drinks.length === 0) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
   };
 
   const foodCondition = (response) => {
-    if (response.food && response.food.length === 1) {
+    if (response.meals && response.meals.length === 1) {
       history.push(`/meals/${response.meals[0].idMeal}`);
     } else if (!response.food || response.food.length === 0) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
@@ -44,12 +44,14 @@ function SearchBar({ pageType }) {
       if (pageType === 'Meals') {
         const data = await fetch(endpointMap.food[searchType] + search);
         const response = await data.json();
+        console.log(response);
         foodCondition(response);
       }
 
       if (pageType === 'Drinks') {
         const data = await fetch(endpointMap.drink[searchType] + search);
         const response = await data.json();
+        console.log(response);
         drinkCondition(response);
       }
     }

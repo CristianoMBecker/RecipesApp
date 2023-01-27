@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import CardRecipe from '../components/CardRecipe';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import RecipesContext from '../context/RecipesContext';
 import useFetch from '../hooks/useFetch';
 
 function Recipes({ history }) {
-  const [recipes, setRecipes] = useState([]);
-  const [categories, setCategories] = useState([]);
-
   const { location: { pathname } } = history;
   const { makeFetch } = useFetch();
+  const { recipes, setRecipes } = useContext(RecipesContext);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchRecipes = async (type) => {
@@ -85,6 +86,12 @@ function Recipes({ history }) {
   );
 }
 
-Recipes.propTypes = {}.isrequired;
+Recipes.propTypes = {
+  history: PropTypes.shape({
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default Recipes;

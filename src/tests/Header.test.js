@@ -6,7 +6,7 @@ import App from '../App';
 
 describe('renderiza a página de comida e testa se', () => {
   test('ao clicar no ícone renderiza o SearchInput', () => {
-    renderWithRouter(<App />);
+    renderWithRouter(<RecipeProvider><App /></RecipeProvider>);
     const emailInput = screen.getByRole('textbox');
     const passwordInput = screen.getByTestId('password-input');
     const enterBtn = screen.getByRole('button', {

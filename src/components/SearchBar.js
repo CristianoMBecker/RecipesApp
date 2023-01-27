@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import RecipesContext from '../context/RecipesContext';
 
 function SearchBar({ pageType }) {
   const [searchType, setSearchType] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const history = useHistory();
+  const { setRecipes } = useContext(RecipesContext);
 
   const endpointMap = {
     food: {
@@ -24,14 +26,18 @@ function SearchBar({ pageType }) {
       history.push(`/drinks/${response.drinks[0].idDrink}`);
     } else if (!response.drinks || response.drinks.length === 0) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    } else {
+      setRecipes(response.drinks);
     }
   };
 
   const foodCondition = (response) => {
     if (response.meals && response.meals.length === 1) {
       history.push(`/meals/${response.meals[0].idMeal}`);
-    } else if (!response.food || response.food.length === 0) {
+    } else if (!response.meals || response.meals.length === 0) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    } else {
+      setRecipes(response.meals);
     }
   };
 
@@ -44,14 +50,12 @@ function SearchBar({ pageType }) {
       if (pageType === 'Meals') {
         const data = await fetch(endpointMap.food[searchType] + search);
         const response = await data.json();
-        console.log(response);
         foodCondition(response);
       }
 
       if (pageType === 'Drinks') {
         const data = await fetch(endpointMap.drink[searchType] + search);
         const response = await data.json();
-        console.log(response);
         drinkCondition(response);
       }
     }

@@ -22,10 +22,3 @@ function App() {
 }
 
 export default App;
-
-// { /*  */ }
-// { /* <Route exact path="/drinks/:id;" component={Meals} />
-// <Route exact path="/meals/:id/in-progress" component={Meals} />
-// <Route exact path="/drinks/:id/in-progress" component={Meals} /> */ }
-
-// <Route exact path="/favorite-recipes" component={ FavoriteRecipes } /> */ }

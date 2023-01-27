@@ -13,6 +13,7 @@ function CardRecipe({ index, nameItem, image, item }) {
       >
         <div className="card-image-container">
           <img
+            className="CardRecipe"
             data-testid={ `${index}-card-img` }
             src={ image }
             alt={ nameItem }

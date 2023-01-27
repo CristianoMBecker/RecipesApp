@@ -79,3 +79,9 @@ footer {
   top: 600px;
   width: 100%;
 }
+
+.CardRecipe {
+  border-radius: 1rem;
+  padding: 5px;
+  width: 250px;
+}

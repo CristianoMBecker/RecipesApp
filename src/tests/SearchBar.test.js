@@ -2,6 +2,10 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import SearchBar from '../components/SearchBar';
 
+const firstLatter = 'first-letter-search-radio';
+const searchRadio = 'name-search-radio';
+const searchInputItem = 'search-input';
+const searchButton = 'exec-search-btn';
 describe('Test the searchBar component', () => {
   jest.mock('react-router-dom', () => ({
     useHistory: () => ({
@@ -13,8 +17,8 @@ describe('Test the searchBar component', () => {
 
   test('search bar should render 3 radio inputs', () => {
     const { getByTestId } = render(<SearchBar />);
-    const radioInput1 = getByTestId('first-letter-search-radio');
-    const radioInput2 = getByTestId('name-search-radio');
+    const radioInput1 = getByTestId(firstLatter);
+    const radioInput2 = getByTestId(searchRadio);
     const radioInput3 = getByTestId('ingredient-search-radio');
 
     expect(radioInput1.type).toBe('radio', 'Radio input 1 is not a radio input');
@@ -24,7 +28,7 @@ describe('Test the searchBar component', () => {
 
   test('search type state should change when radio button is clicked', () => {
     const { getByTestId } = render(<SearchBar pageType="Meals" />);
-    const nameRadio = getByTestId('name-search-radio');
+    const nameRadio = getByTestId(searchRadio);
     const onChangeMock = jest.fn();
     nameRadio.onchange = onChangeMock;
     fireEvent.click(nameRadio);
@@ -33,9 +37,9 @@ describe('Test the searchBar component', () => {
 
   test('displays an alert when searching by first letter with more than one character', async () => {
     const { getByTestId } = render(<SearchBar pageType="Drinks" />);
-    const firstLetterRadio = getByTestId('first-letter-search-radio');
-    const searchInput = getByTestId('search-input');
-    const execSearchBtn = getByTestId('exec-search-btn');
+    const firstLetterRadio = getByTestId(firstLatter);
+    const searchInput = getByTestId(searchInputItem);
+    const execSearchBtn = getByTestId(searchButton);
 
     fireEvent.click(firstLetterRadio);
     fireEvent.change(searchInput, { target: { value: 'ab' } });
@@ -47,7 +51,7 @@ describe('Test the searchBar component', () => {
   test('handleSubmit is called when search button is clicked', () => {
     const handleSubmit = jest.fn();
     const { getByTestId } = render(<SearchBar handleSubmit={ handleSubmit } />);
-    const searchBtn = getByTestId('exec-search-btn');
+    const searchBtn = getByTestId(searchButton);
     fireEvent.click(searchBtn);
     handleSubmit(); // adicionando essa chamada aqui
     expect(handleSubmit).toHaveBeenCalled();
@@ -75,11 +79,11 @@ describe('Test the searchBar component', () => {
     fireEvent.click(ingredientRadio);
 
     // Enter a search term in the input field
-    const searchInput = getByTestId('search-input');
+    const searchInput = getByTestId(searchInputItem);
     fireEvent.change(searchInput, { target: { value: 'chicken' } });
 
     // Click the search button
-    const execSearchBtn = getByTestId('exec-search-btn');
+    const execSearchBtn = getByTestId(searchButton);
     fireEvent.click(execSearchBtn);
 
     // Assert that the mock fetch function was called with the correct URL
@@ -99,15 +103,15 @@ describe('Test the searchBar component', () => {
     const { getByTestId } = render(<SearchBar pageType="Meals" />);
 
     // Select the name search radio button
-    const nameRadio = getByTestId('name-search-radio');
+    const nameRadio = getByTestId(searchRadio);
     fireEvent.click(nameRadio);
 
     // Enter a search term in the input field
-    const searchInput = getByTestId('search-input');
+    const searchInput = getByTestId(searchInputItem);
     fireEvent.change(searchInput, { target: { value: 'chicken' } });
 
     // Click the search button
-    const execSearchBtn = getByTestId('exec-search-btn');
+    const execSearchBtn = getByTestId(searchButton);
     fireEvent.click(execSearchBtn);
 
     // Wait for the promise to resolve
@@ -134,11 +138,11 @@ describe('Test the searchBar component', () => {
     fireEvent.click(firstLetterRadio);
 
     // Enter a search term in the input field
-    const searchInput = getByTestId('search-input');
+    const searchInput = getByTestId(searchInputItem);
     fireEvent.change(searchInput, { target: { value: 'a' } });
 
     // Click the search button
-    const execSearchBtn = getByTestId('exec-search-btn');
+    const execSearchBtn = getByTestId(searchButton);
     fireEvent.click(execSearchBtn);
 
     // Assert that the mock fetch function was called with the correct URL

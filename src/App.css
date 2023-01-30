@@ -79,3 +79,17 @@ footer {
   top: 600px;
   width: 100%;
 }
+
+.CardRecipe {
+  border-radius: 1rem;
+  padding: 5px;
+  width: 250px;
+}
+
+button {
+  border: 1px solid black;
+}
+
+.button-selected {
+  border: 2px solid green;
+}

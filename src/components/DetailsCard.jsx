@@ -1,29 +1,50 @@
 import React from 'react';
 
-function DetailsCard({ image, title, categoryText, ingredient, instruction, video }) {
+function DetailsCard({
+  image,
+  title,
+  categoryText,
+  ingredient,
+  instruction,
+  video,
+  alcool,
+}) {
   return (
     <div>
-      <h2 data-testid="recipe-title">{title}</h2>
+      <h1 data-testid="recipe-title">{ title }</h1>
       <img src={ image } alt={ title } data-testid="recipe-photo" />
       <div>
-        <p data-testid="recipe-category">{categoryText}</p>
         <ul>
           {
-            ingredient.filter((item, index) => (
-              <li>{item === `strIngredient${index + 1}`.length > 0}</li>
+            ingredient.map((ingrediente, index) => (
+              <li
+                data-testid={ `${index}-ingredient-name-and-measure` }
+                key={ index }
+              >
+                { ingrediente }
+              </li>
+
             ))
           }
         </ul>
-        <ul>
-          {
-            instruction.filter((item, index) => (
-              <li>{item === `strInstructions${index + 1}`.length > 0}</li>
-            ))
-          }
-        </ul>
+        <h2 data-testid="recipe-category">{ `${categoryText} ${alcool}` }</h2>
       </div>
+      <p data-testid="instructions">
+        {instruction}
+      </p>
       {
-        video && <span><a data-testid="video" href={ video }>Veja no youtube</a></span>
+        video
+        && (
+          <div>
+            <iframe
+              title="Veja no youtube"
+              data-testid="video"
+              width="420"
+              height="315"
+              src={ video }
+            />
+          </div>
+        )
       }
     </div>
   );

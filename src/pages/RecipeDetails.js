@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import DetailsCard from '../components/DetailsCard';
 
 function RecipeDetails(props) {
   const { history, match: { params: { id } } } = props;

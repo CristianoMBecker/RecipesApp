@@ -22,6 +22,7 @@ function SearchBar({ pageType }) {
   };
 
   const drinkCondition = (response) => {
+    console.log(response);
     if (response.drinks && response.drinks.length === 1) {
       history.push(`/drinks/${response.drinks[0].idDrink}`);
     } else if (!response.drinks || response.drinks.length === 0) {
@@ -56,6 +57,7 @@ function SearchBar({ pageType }) {
       if (pageType === 'Drinks') {
         const data = await fetch(endpointMap.drink[searchType] + search);
         const response = await data.json();
+        console.log('teste');
         drinkCondition(response);
       }
     }

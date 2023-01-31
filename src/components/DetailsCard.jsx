@@ -3,6 +3,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import './DetailsCard.css';
+import { useHistory } from 'react-router-dom';
 
 function DetailsCard({
   image,
@@ -15,12 +16,20 @@ function DetailsCard({
   recomendations,
   pathname,
 }) {
+  const history = useHistory();
+
   const settings = {
     dots: false,
     infinite: false,
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 1,
+  };
+
+  const clickChange = () => {
+    console.log('cliquei');
+    console.log(`${pathname}/in-progress`);
+    history.push(`${pathname}/in-progress`);
   };
 
   return (
@@ -93,6 +102,7 @@ function DetailsCard({
           type="button"
           id="startRecipeBtn"
           data-testid="start-recipe-btn"
+          onClick={ clickChange }
         >
           Start Recipe
         </button>

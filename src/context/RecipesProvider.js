@@ -3,12 +3,14 @@ import RecipesContext from './RecipesContext';
 
 function RecipesProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
+  const [recipeApi, setRecipeApi] = useState([]);
 
   const values = useMemo(() => ({
     recipes,
     setRecipes,
-
-  }), [recipes]);
+    recipeApi,
+    setRecipeApi,
+  }), [recipes, recipeApi]);
   return (
     <RecipesContext.Provider value={ values }>
       {children}

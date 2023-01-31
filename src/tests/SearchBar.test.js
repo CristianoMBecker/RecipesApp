@@ -1,12 +1,29 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import SearchBar from '../components/SearchBar';
 import RecipesProvider from '../context/RecipesProvider';
+import renderWithRouter from './helpers/renderWithRouter';
+import App from '../App';
+import drinkCategories from '../../cypress/mocks/drinkCategories';
+import drinks from '../../cypress/mocks/drinks';
+import ginDrinks from '../../cypress/mocks/ginDrinks';
+import oneDrink from '../../cypress/mocks/oneDrink';
+// import { fetchRecipe } from '../pages/RecipeDetails';
 
 const firstLatter = 'first-letter-search-radio';
 const searchRadio = 'name-search-radio';
 const searchInputItem = 'search-input';
 const searchButton = 'exec-search-btn';
+
+const endPoint = {
+  meals: 'https://www.themealdb.com/api/json/v1/1/search.php?s=',
+  mealCategories: 'https://www.themealdb.com/api/json/v1/1/list.php?c=list',
+  drinks: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
+  drinkCategories: 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list',
+  filterCategoriesMeals: 'https://www.themealdb.com/api/json/v1/1/filter.php?c=',
+  filterCategoriesDrinks: 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=',
+};
 describe('Test the searchBar component', () => {
   jest.mock('react-router-dom', () => ({
     useHistory: () => ({
@@ -49,15 +66,6 @@ describe('Test the searchBar component', () => {
     expect(global.alert).toHaveBeenCalledWith('Your search must have only 1 (one) character');
   });
 
-  // test.only('handleSubmit is called when search button is clicked', () => {
-  //   const handleSubmit = jest.fn();
-  //   const { getByTestId } = render(<RecipesProvider><SearchBar handleSubmit={ handleSubmit } /></RecipesProvider>);
-  //   const searchBtn = getByTestId(searchButton);
-  //   fireEvent.click(searchBtn);
-  //   handleSubmit(); // adicionando essa chamada aqui
-  //   expect(handleSubmit).toHaveBeenCalled();
-  // });
-
   test('API is called correctly when ingredient search is selected', () => {
     // Create a mock function to simulate the API call
     const mockFetch = jest.fn().mockResolvedValue({
@@ -73,7 +81,7 @@ describe('Test the searchBar component', () => {
     global.fetch = mockFetch;
 
     // Render the SearchBar component
-    const { getByTestId } = render(<SearchBar pageType="Meals" />);
+    const { getByTestId } = render(<RecipesProvider><SearchBar pageType="Meals" /></RecipesProvider>);
 
     // Select the ingredient search radio button
     const ingredientRadio = getByTestId('ingredient-search-radio');
@@ -101,7 +109,7 @@ describe('Test the searchBar component', () => {
     global.fetch = mockFetch;
 
     // Render the SearchBar component
-    const { getByTestId } = render(<SearchBar pageType="Meals" />);
+    const { getByTestId } = render(<RecipesProvider><SearchBar pageType="Meals" /></RecipesProvider>);
 
     // Select the name search radio button
     const nameRadio = getByTestId(searchRadio);
@@ -122,7 +130,7 @@ describe('Test the searchBar component', () => {
       );
     });
   });
-  test('API is called correctly when first letter search is selected', async () => {
+  test('API is called correctly when the first letter search is selected', async () => {
     // Create a mock function to simulate the API call
 
     const mockFetch = jest.fn().mockReturnValue(
@@ -132,7 +140,7 @@ describe('Test the searchBar component', () => {
     global.fetch = mockFetch;
 
     // Render the SearchBar component
-    const { getByTestId } = render(<SearchBar pageType="Meals" />);
+    const { getByTestId } = render(<RecipesProvider><SearchBar pageType="Meals" /></RecipesProvider>);
 
     // Select the first letter search radio button
     const firstLetterRadio = getByTestId('first-letter-search-radio');
@@ -148,5 +156,125 @@ describe('Test the searchBar component', () => {
 
     // Assert that the mock fetch function was called with the correct URL
     expect(mockFetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=a');
+  });
+  test('if the correct drink appears when the search by name button is selected', async () => {
+    global.fetch = jest.fn().mockImplementation((url) => {
+      switch (url) {
+      case endPoint.drinks:
+        return Promise.resolve({
+          ok: true,
+          json: jest.fn().mockResolvedValue(drinks),
+        });
+      case endPoint.drinkCategories:
+        return Promise.resolve({
+          ok: true,
+          json: jest.fn().mockResolvedValue(drinkCategories),
+        });
+      case 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=gin':
+        return Promise.resolve({
+          json: jest.fn().mockResolvedValue(ginDrinks),
+        });
+      default:
+        return {};
+      }
+    });
+
+    window.alert = jest.fn();
+
+    const { history } = renderWithRouter(<RecipesProvider><App /></RecipesProvider>);
+    act(() => {
+      history.push('/drinks');
+    });
+    expect(history.location.pathname).toBe('/drinks');
+
+    const searchBarIcon = await screen.findByRole('img', {
+      name: /search icon/i,
+    });
+
+    fireEvent.click(searchBarIcon);
+
+    const searchByName = screen.getByRole('radio', {
+      name: /search by name/i,
+    });
+
+    fireEvent.click(searchByName);
+
+    expect(searchByName.checked).toBe(true);
+
+    const input = screen.getByRole('textbox');
+    const searchBtn = screen.getByTestId(searchButton);
+
+    fireEvent.change(input, { target: { value: 'gin' } });
+
+    fireEvent.click(searchBtn);
+
+    expect(global.fetch).toHaveBeenCalledTimes(3);
+
+    const nameEl = await screen.findByRole('heading', { name: /gin fizz/i });
+    expect(nameEl).toBeInTheDocument();
+  });
+});
+
+describe('Test the searchBar features', () => {
+  test('if the route is directed to drink details when a drink name is selected', async () => {
+    global.fetch = jest.fn().mockImplementation((url) => {
+      switch (url) {
+      case endPoint.drinks:
+        return Promise.resolve({
+          ok: true,
+          json: jest.fn().mockResolvedValue(drinks),
+        });
+      case endPoint.drinkCategories:
+        return Promise.resolve({
+          ok: true,
+          json: jest.fn().mockResolvedValue(drinkCategories),
+        });
+      case 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=aquamarine':
+        return Promise.resolve({
+          json: jest.fn().mockResolvedValue(oneDrink),
+        });
+      case 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=178319':
+        return Promise.resolve({
+          status: 200,
+          json: jest.fn().mockResolvedValue(oneDrink),
+        });
+      default:
+        return {};
+      }
+    });
+
+    const { history } = renderWithRouter(<RecipesProvider><App /></RecipesProvider>);
+    act(() => {
+      history.push('/drinks');
+    });
+    expect(history.location.pathname).toBe('/drinks');
+
+    const searchBarIcon = await screen.findByRole('img', {
+      name: /search icon/i,
+    });
+
+    fireEvent.click(searchBarIcon);
+
+    const searchByName = screen.getByRole('radio', {
+      name: /search by name/i,
+    });
+
+    fireEvent.click(searchByName);
+
+    expect(searchByName.checked).toBe(true);
+
+    const input = screen.getByRole('textbox');
+    const searchBtn = screen.getByTestId(searchButton);
+
+    fireEvent.change(input, { target: { value: 'aquamarine' } });
+
+    fireEvent.click(searchBtn);
+
+    expect(global.fetch).toHaveBeenCalledTimes(3);
+    expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=aquamarine');
+    // await waitFor(() => {
+    //   expect(history.location.pathname).toMatch(/drinks\/\d+/);
+    // });
+    // expect(global.fetch).toHaveBeenCalledTimes(4);
   });
 });

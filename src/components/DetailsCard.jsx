@@ -16,7 +16,6 @@ function DetailsCard({
   pathname,
 }) {
   const settings = {
-    slidesPerRow: 1,
     dots: false,
     infinite: false,
     speed: 500,
@@ -24,7 +23,6 @@ function DetailsCard({
     slidesToScroll: 1,
   };
 
-  console.log(recomendations);
   return (
     <div>
       <h1 data-testid="recipe-title">{ title }</h1>
@@ -43,7 +41,11 @@ function DetailsCard({
             ))
           }
         </ul>
-        <h2 data-testid="recipe-category">{ `${categoryText} ${alcool}` }</h2>
+        {
+          pathname.includes('drinks') ? (
+            <h2 data-testid="recipe-category">{ `${categoryText} ${alcool}` }</h2>
+          ) : (<h2 data-testid="recipe-category">{ `${categoryText}` }</h2>)
+        }
       </div>
       <p data-testid="instructions">
         {instruction}
@@ -53,7 +55,7 @@ function DetailsCard({
           {
             pathname.includes('drinks') ? (
               recomendations.map((d, index) => (
-                <div key={ d } data-testid={ `${index}-recommendation-card` }>
+                <div key={ d.strMeal } data-testid={ `${index}-recommendation-card` }>
                   <img
                     key={ d.strMeal }
                     className="recomImg"
@@ -63,19 +65,17 @@ function DetailsCard({
                   <p data-testid={ `${index}-recommendation-title` }>{ d.strMeal }</p>
                 </div>
               ))
-            ) : (recomendations.map((d, index) => (
-              <>
-                <img
-                  data-testid={ `${index}-recommendation-card` }
-                  key={ d.strDrink }
-                  className="recomImg"
-                  src={ d.strDrinkThumb }
-                  alt={ d.strDrink }
-                />
-                <p data-testid={ `${index}-recommendation-title` }>{ d.strDrink }</p>
-              </>
-
-            )))
+            ) : (
+              recomendations.map((d, index) => (
+                <div key={ d.strDrink } data-testid={ `${index}-recommendation-card` }>
+                  <img
+                    className="recomImg"
+                    src={ d.strDrinkThumb }
+                    alt={ d.strDrink }
+                  />
+                  <p data-testid={ `${index}-recommendation-title` }>{ d.strDrink }</p>
+                </div>
+              )))
           }
         </Slider>
       </div>
@@ -93,6 +93,15 @@ function DetailsCard({
           </div>
         )
       }
+      <div className="startRecipeBtn">
+        <button
+          type="button"
+          id="startRecipeBtn"
+          data-testid="start-recipe-btn"
+        >
+          Start Recipe
+        </button>
+      </div>
     </div>
   );
 }

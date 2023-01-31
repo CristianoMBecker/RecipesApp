@@ -25,21 +25,18 @@ function DetailsCard({
 
   return (
     <div>
-      <h1 data-testid="recipe-title">{ title }</h1>
+      <h1 data-testid="recipe-title">{title}</h1>
       <img src={ image } alt={ title } data-testid="recipe-photo" />
       <div>
         <ul>
-          {
-            ingredient.map((ingrediente, index) => (
-              <li
-                data-testid={ `${index}-ingredient-name-and-measure` }
-                key={ index }
-              >
-                { ingrediente }
-              </li>
-
-            ))
-          }
+          {ingredient.map((ingrediente, index) => (
+            <li
+              data-testid={ `${index}-ingredient-name-and-measure` }
+              key={ index }
+            >
+              {ingrediente}
+            </li>
+          ))}
         </ul>
         {
           pathname.includes('drinks') ? (
@@ -47,9 +44,7 @@ function DetailsCard({
           ) : (<h2 data-testid="recipe-category">{ `${categoryText}` }</h2>)
         }
       </div>
-      <p data-testid="instructions">
-        {instruction}
-      </p>
+      <p data-testid="instructions">{instruction}</p>
       <div>
         <Slider { ...settings }>
           {

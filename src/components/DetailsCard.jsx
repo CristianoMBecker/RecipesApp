@@ -16,7 +16,6 @@ function DetailsCard({
   pathname,
 }) {
   const settings = {
-    slidesPerRow: 1,
     dots: false,
     infinite: false,
     speed: 500,
@@ -24,7 +23,6 @@ function DetailsCard({
     slidesToScroll: 1,
   };
 
-  console.log(recomendations);
   return (
     <div>
       <h1 data-testid="recipe-title">{title}</h1>
@@ -40,52 +38,56 @@ function DetailsCard({
             </li>
           ))}
         </ul>
-        <h2 data-testid="recipe-category">{`${categoryText} ${alcool}`}</h2>
+        {
+          pathname.includes('drinks') ? (
+            <h2 data-testid="recipe-category">{ `${categoryText} ${alcool}` }</h2>
+          ) : (<h2 data-testid="recipe-category">{ `${categoryText}` }</h2>)
+        }
       </div>
       <p data-testid="instructions">{instruction}</p>
       <div>
         <Slider { ...settings }>
-          {pathname.includes('drinks')
-            ? recomendations.map((d, index) => (
-              <div key={ d } data-testid={ `${index}-recommendation-card` }>
-                <img
-                  key={ d.strMeal }
-                  className="recomImg"
-                  src={ d.strMealThumb }
-                  alt={ d.strMeal }
-                />
-                <p data-testid={ `${index}-recommendation-title` }>
-                  {d.strMeal}
-                </p>
-              </div>
-            ))
-            : recomendations.map((d, index) => (
-              <>
-                <img
-                  data-testid={ `${index}-recommendation-card` }
-                  key={ d.strDrink }
-                  className="recomImg"
-                  src={ d.strDrinkThumb }
-                  alt={ d.strDrink }
-                />
-                <p data-testid={ `${index}-recommendation-title` }>
-                  {d.strDrink}
-                </p>
-              </>
-            ))}
+          {
+            pathname.includes('drinks') ? (
+              recomendations.map((d, index) => (
+                <div key={ d.strMeal } data-testid={ `${index}-recommendation-card` }>
+                  <img
+                    key={ d.strMeal }
+                    className="recomImg"
+                    src={ d.strMealThumb }
+                    alt={ d.strMeal }
+                  />
+                  <p data-testid={ `${index}-recommendation-title` }>{ d.strMeal }</p>
+                </div>
+              ))
+            ) : (
+              recomendations.map((d, index) => (
+                <div key={ d.strDrink } data-testid={ `${index}-recommendation-card` }>
+                  <img
+                    className="recomImg"
+                    src={ d.strDrinkThumb }
+                    alt={ d.strDrink }
+                  />
+                  <p data-testid={ `${index}-recommendation-title` }>{ d.strDrink }</p>
+                </div>
+              )))
+          }
         </Slider>
       </div>
-      {video && (
-        <div>
-          <iframe
-            title="Veja no youtube"
-            data-testid="video"
-            width="420"
-            height="315"
-            src={ video }
-          />
-        </div>
-      )}
+      {
+        video
+        && (
+          <div>
+            <iframe
+              title="Veja no youtube"
+              data-testid="video"
+              width="420"
+              height="315"
+              src={ video }
+            />
+          </div>
+        )
+      }
       <div className="startRecipeBtn">
         <button
           type="button"

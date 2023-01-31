@@ -2,3 +2,8 @@
   border-radius: 7px;
   width: 150px;
 }
+
+.startRecipeBtn button {
+  bottom: 0;
+  position: fixed;
+}

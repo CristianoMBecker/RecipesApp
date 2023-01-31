@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import RecipesContext from '../context/RecipesContext';
 
 function RecipeInProgress({ history }) {
-  const { recipeApi, setRecipeApi } = useContext(RecipesContext);
+  const { recipeApi } = useContext(RecipesContext);
   const { location: { pathname } } = history;
   console.log(pathname.includes('meals'));
   return (

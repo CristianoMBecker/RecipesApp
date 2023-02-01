@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import useFetch from '../hooks/useFetch';
+import './RecipeInProgress.css';
 
 function RecipeInProgress({ history }) {
   const { makeFetch } = useFetch();
   const [recipeApi, setRecipeApi] = useState([{}]);
+  const [checkedItems, setCheckedItems] = useState({});
   const { location: { pathname } } = history;
   const id = pathname.split('/')[2];
   useEffect(() => {
@@ -31,8 +33,15 @@ function RecipeInProgress({ history }) {
 
   const ingredientsAndCups = ing.map((item, index) => `${item} ${measures[index]}`);
 
+  const handleChange = (e) => {
+    setCheckedItems({
+      ...checkedItems,
+      [e.target.name]: e.target.checked,
+    });
+  };
+
   return (
-    <div>
+    <div className="recipe-in-progress-content">
 
       in progress
       <h1 data-testid="recipe-title">
@@ -53,8 +62,16 @@ function RecipeInProgress({ history }) {
               <label
                 data-testid="ingredient-step"
                 htmlFor={ `${index}-ingredient-step` }
+                style={ { textDecoration: checkedItems[`checkbox-${index}`]
+                  ? 'line-through solid rgb(0, 0, 0)' : 'none' } }
               >
-                <input id={ `${index}-ingredient-step` } type="checkbox" />
+                <input
+                  id={ `${index}-ingredient-step` }
+                  type="checkbox"
+                  name={ `checkbox-${index}` }
+                  checked={ checkedItems[`checkbox-${index}`] || false }
+                  onChange={ handleChange }
+                />
                 {ingredient}
               </label>
             </div>

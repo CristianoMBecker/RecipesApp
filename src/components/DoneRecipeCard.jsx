@@ -1,6 +1,12 @@
 import React from 'react';
 
 function DoneRecipeCard({ recipesArray, filter }) {
+  /* const copy = require('clipboard-copy');
+
+  const shareLink function () {
+    copy('This is some cool text')
+  } */
+
   return (
     <>
       {recipesArray.map((item, index) => {
@@ -14,7 +20,7 @@ function DoneRecipeCard({ recipesArray, filter }) {
                 {item.strDrink || item.strMeal }
               </p>
               <p data-testid={ `${index}-horizontal-top-text` }>
-                {item.strCategory}
+                {`${item.strArea} - ${item.strCategory} - ${item.strAlcoholic}`}
               </p>
               <img
                 className="recipeImg"
@@ -30,14 +36,14 @@ function DoneRecipeCard({ recipesArray, filter }) {
                 ))
               }
               <span data-testid={ `${index}-horizontal-done-date` }>
-                LUGAR ONDE VAI FICAR A DATA
+                23/06/2020
               </span>
               <button
                 type="button"
+                src="src/images/shareIcon.svg"
+                alt="compartilhar"
                 data-testid={ `${index}-horizontal-share-btn` }
-              >
-                Share
-              </button>
+              />
             </div>
           );
         }

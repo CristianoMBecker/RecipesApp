@@ -1,0 +1,136 @@
+/* animations */
+
+@keyframes grow {
+
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes grow-and-rotate {
+
+  0% {
+    transform: scale(0) rotate(0deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(-360deg);
+  }
+}
+
+@keyframes slide-in-from-left {
+
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 0;
+  }
+}
+
+@keyframes slide-in-from-right {
+
+  0% {
+    right: -100%;
+  }
+
+  100% {
+    right: 0;
+  }
+}
+
+@keyframes slide-in-from-bottom {
+
+  0% {
+    bottom: -100%;
+  }
+
+  100% {
+    bottom: 5%;
+  }
+}
+
+.logo-content {
+  align-items: center;
+  background-color: rgb(65, 25, 127);
+  display: flex;
+  flex-direction: column;
+  height: 350px;
+}
+
+.login-logo {
+  animation: grow-and-rotate 1s ease-in-out;
+  margin-top: 30px;
+}
+
+.tomate-image {
+  animation: slide-in-from-left 1s ease-in-out;
+  position: relative;
+  top: -50px;
+}
+
+.form-login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 85px;
+}
+
+.form-login h1 {
+  animation: grow 1s ease-in-out;
+  color: rgb(65, 25, 127);
+  font-size: 1.25rem;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.165rem;
+  text-transform: uppercase;
+}
+
+.form-login input {
+  animation: slide-in-from-right 1s ease-in-out;
+  border: 0.5px solid rgba(65, 25, 127, 1);
+  border-radius: 4px;
+  color: rgb(65, 25, 127);
+  font-size: 0.87rem;
+  height: 40px;
+  margin-bottom: 9px;
+  padding: 0 20px;
+  position: relative;
+  width: 276px;
+}
+
+.form-login input::placeholder {
+  color: rgb(65, 25, 127);
+}
+
+.form-login input::selection {
+  color: rgb(65, 25, 127);
+}
+
+.form-login:focus {
+  background-color: yellow;
+  outline: none;
+}
+
+.form-login button {
+  animation: slide-in-from-bottom 1s ease-in-out;
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 4px;
+  bottom: 5%;
+  color: white;
+  display: block;
+  height: 40px;
+  position: absolute;
+  transition: 0.5s;
+  width: 276px;
+}
+
+.form-login button:disabled {
+  background-color: rgba(252, 196, 54, 0.63);
+}

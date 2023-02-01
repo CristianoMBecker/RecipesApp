@@ -1,5 +1,16 @@
 /* animations */
 
+@keyframes grow {
+
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 @keyframes grow-and-rotate {
 
   0% {
@@ -71,6 +82,7 @@
 }
 
 .form-login h1 {
+  animation: grow 1s ease-in-out;
   color: rgb(65, 25, 127);
   font-size: 1.25rem;
   font-style: italic;

@@ -25,7 +25,7 @@ function DoneRecipes() {
       strArea: 'Turkish',
       strTags: 'teste1',
       idDrink: '15997',
-      strDrink: 'GG',
+      strDrink: 'Aquamarine',
       strCategory: 'Ordinary Drink',
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
     },

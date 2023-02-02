@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import copy from 'clipboard-copy';
 import IngredientsList from '../components/IngredientsList';
 import useFetch from '../hooks/useFetch';
 import './RecipeInProgress.css';
 
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+
 function RecipeInProgress({ history }) {
   const { makeFetch, isLoading } = useFetch();
   const [recipeApi, setRecipeApi] = useState([{}]);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   // const { checkedItems, setCheckedItems } = useContext(RecipesContext);
   const { location: { pathname } } = history;
 
@@ -23,9 +29,7 @@ function RecipeInProgress({ history }) {
       }
     };
     fetchRecipe();
-  }, []);
 
-  useEffect(() => {
     const inProgress = JSON.parse(localStorage.getItem('inProgress'));
     if (inProgress) {
       if (!inProgress[currPathName][id]) {
@@ -52,6 +56,15 @@ function RecipeInProgress({ history }) {
     }
   }, []);
 
+  useEffect(() => {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+
+    const isFavoriteRecipe = favoriteRecipes.some((recipe) => recipe.id
+    === recipeApi[0].idDrink
+      || recipe.id === recipeApi[0].idMeal);
+    setIsFavorite(isFavoriteRecipe);
+  }, [recipeApi]);
+
   const makeIngredients = (recipe) => {
     const ing = (Object.entries(recipe)
       .filter(([key, value]) => key.startsWith('strIngredient') && value)
@@ -66,6 +79,29 @@ function RecipeInProgress({ history }) {
   };
 
   const ingredients = makeIngredients(recipeApi[0]);
+
+  const saveFavorite = () => {
+    const isDrink = currPathName === 'drinks';
+    const currId = isDrink ? recipeApi[0].idDrink : recipeApi[0].idMeal;
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    const isFavoriteRecipe = favoriteRecipes.some((recipe) => recipe.id === currId);
+    if (!isFavoriteRecipe) {
+      const newRecipe = {
+        id: currId,
+        type: isDrink ? 'drink' : 'meal',
+        nationality: !isDrink ? recipeApi[0].strArea : '',
+        category: recipeApi[0].strCategory,
+        alcoholicOrNot: isDrink ? recipeApi[0].strAlcoholic : '',
+        name: isDrink ? recipeApi[0].strDrink : recipeApi[0].strMeal,
+        image: isDrink ? recipeApi[0].strDrinkThumb : recipeApi[0].strMealThumb,
+      };
+      localStorage
+        .setItem('favoriteRecipes', JSON.stringify([...favoriteRecipes, newRecipe]));
+    } else {
+      const newFavorite = favoriteRecipes.filter((recipe) => recipe.id !== currId);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
+    }
+  };
 
   return (
     <div className="recipe-in-progress-content">
@@ -89,8 +125,32 @@ function RecipeInProgress({ history }) {
         currPathName={ currPathName }
       />}
 
-      <button data-testid="share-btn">Share</button>
-      <button data-testid="favorite-btn">Favorite</button>
+      <button
+        data-testid="share-btn"
+        onClick={ () => {
+          console.log(`http://localhost:3000/${currPathName}/${id}`);
+          copy(`http://localhost:3000/${currPathName}/${id}`);
+          setLinkCopied(true);
+        } }
+      >
+        Share
+
+      </button>
+
+      {linkCopied && <p>Link copied!</p>}
+      <button
+        onClick={ () => {
+          saveFavorite();
+          setIsFavorite(!isFavorite);
+        } }
+      >
+        <img
+          data-testid="favorite-btn"
+          src={ isFavorite
+            ? blackHeartIcon : whiteHeartIcon }
+          alt="ícone de favoritos"
+        />
+      </button>
       {
         pathname.includes('drinks') ? (
           <h2
@@ -106,7 +166,12 @@ function RecipeInProgress({ history }) {
         { recipeApi.strInstructions}
       </p>
 
-      <button data-testid="finish-recipe-btn">Finish</button>
+      <button
+        data-testid="finish-recipe-btn"
+      >
+        Finish
+
+      </button>
     </div>
   );
 }

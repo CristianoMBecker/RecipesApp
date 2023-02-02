@@ -1,44 +1,71 @@
 import React, { useEffect, useState } from 'react';
+import IngredientsList from '../components/IngredientsList';
 import useFetch from '../hooks/useFetch';
 import './RecipeInProgress.css';
 
 function RecipeInProgress({ history }) {
-  const { makeFetch } = useFetch();
+  const { makeFetch, isLoading } = useFetch();
   const [recipeApi, setRecipeApi] = useState([{}]);
-  const [checkedItems, setCheckedItems] = useState({});
+  // const { checkedItems, setCheckedItems } = useContext(RecipesContext);
   const { location: { pathname } } = history;
+
   const id = pathname.split('/')[2];
+  const currPathName = pathname.split('/')[1];
+
   useEffect(() => {
     const fetchRecipe = async () => {
       if (pathname.includes('drinks')) {
         const data = await makeFetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
-        console.log(data);
         setRecipeApi(data.drinks);
       } else {
         const data = await makeFetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-        console.log(data);
         setRecipeApi(data.meals);
       }
     };
     fetchRecipe();
   }, []);
-  console.log(recipeApi);
-  const ing = (Object.entries(recipeApi[0])
-    .filter(([key, value]) => key.startsWith('strIngredient') && value)
-    .map(([, value]) => value));
 
-  const measures = (Object.entries(recipeApi[0])
-    .filter(([key, value]) => key.startsWith('strMeasure') && value)
-    .map(([, value]) => value));
+  useEffect(() => {
+    const inProgress = JSON.parse(localStorage.getItem('inProgress'));
+    if (inProgress) {
+      if (!inProgress[currPathName][id]) {
+        const newInProgress = {
+          ...inProgress,
+          [currPathName]: {
+            ...inProgress[currPathName],
+            [id]: [],
+          },
+          [currPathName === 'drinks' ? 'meals' : 'drinks']:
+           inProgress[[currPathName === 'drinks' ? 'meals' : 'drinks']],
+        };
+        localStorage.setItem('inProgress', JSON.stringify(newInProgress));
+      }
+    } else {
+      const newInProgress = {
+        ...inProgress,
+        [currPathName]: {
+          [id]: [],
+        },
+        [currPathName === 'drinks' ? 'meals' : 'drinks']: {},
+      };
+      localStorage.setItem('inProgress', JSON.stringify(newInProgress));
+    }
+  }, []);
 
-  const ingredientsAndCups = ing.map((item, index) => `${item} ${measures[index]}`);
+  const makeIngredients = (recipe) => {
+    const ing = (Object.entries(recipe)
+      .filter(([key, value]) => key.startsWith('strIngredient') && value)
+      .map(([, value]) => value));
 
-  const handleChange = (e) => {
-    setCheckedItems({
-      ...checkedItems,
-      [e.target.name]: e.target.checked,
-    });
+    const measures = (Object.entries(recipe)
+      .filter(([key, value]) => key.startsWith('strMeasure') && value)
+      .map(([, value]) => value));
+
+    const ingredients = ing.map((item, index) => `${item} ${measures[index]}`);
+    return ingredients;
   };
+
+  const ingredients = makeIngredients(recipeApi[0]);
 
   return (
     <div className="recipe-in-progress-content">
@@ -55,29 +82,13 @@ function RecipeInProgress({ history }) {
         alt={ pathname.includes('drinks') ? recipeApi[0].strDrink : recipeApi[0].strMeal }
         data-testid="recipe-photo"
       />
-      <ul>
-        {
-          ingredientsAndCups.map((ingredient, index) => (
-            <div key={ `${ingredient}-${index}` }>
-              <label
-                data-testid="ingredient-step"
-                htmlFor={ `${index}-ingredient-step` }
-                style={ { textDecoration: checkedItems[`checkbox-${index}`]
-                  ? 'line-through solid rgb(0, 0, 0)' : 'none' } }
-              >
-                <input
-                  id={ `${index}-ingredient-step` }
-                  type="checkbox"
-                  name={ `checkbox-${index}` }
-                  checked={ checkedItems[`checkbox-${index}`] || false }
-                  onChange={ handleChange }
-                />
-                {ingredient}
-              </label>
-            </div>
-          ))
-        }
-      </ul>
+      { !isLoading && <IngredientsList
+        isLoading={ isLoading }
+        ingredients={ ingredients }
+        id={ id }
+        currPathName={ currPathName }
+      />}
+
       <button data-testid="share-btn">Share</button>
       <button data-testid="favorite-btn">Favorite</button>
       {

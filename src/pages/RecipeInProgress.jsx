@@ -106,7 +106,6 @@ function RecipeInProgress({ history }) {
   return (
     <div className="recipe-in-progress-content">
 
-      in progress
       <h1 data-testid="recipe-title">
 
         {pathname.includes('drinks') ? recipeApi[0].strDrink : recipeApi[0].strMeal}
@@ -166,12 +165,6 @@ function RecipeInProgress({ history }) {
         { recipeApi.strInstructions}
       </p>
 
-      <button
-        data-testid="finish-recipe-btn"
-      >
-        Finish
-
-      </button>
     </div>
   );
 }

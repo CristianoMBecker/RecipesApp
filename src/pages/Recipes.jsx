@@ -74,8 +74,6 @@ function Recipes({ history }) {
       setToggle(false);
       clearFilters();
     }
-
-    console.log(target.name);
   };
 
   return (

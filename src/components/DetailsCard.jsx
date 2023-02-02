@@ -27,8 +27,6 @@ function DetailsCard({
   };
 
   const clickChange = () => {
-    console.log('cliquei');
-    console.log(`${pathname}/in-progress`);
     history.push(`${pathname}/in-progress`);
   };
 

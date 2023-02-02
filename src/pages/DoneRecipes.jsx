@@ -7,7 +7,6 @@ function DoneRecipes() {
   const [filter, setFilter] = useState('all');
 
   const changeFilter = (filterName) => {
-    console.log(filterName);
     setFilter(filterName);
   };
 
@@ -15,7 +14,7 @@ function DoneRecipes() {
     {
       strTags: 'Pasta, Curry',
       strArea: 'Italian',
-      idMeal: '52977',
+      idMeal: '52771',
       strMeal: 'Spicy Arrabiata Penne',
       strCategory: 'Vegetarian',
       strMealThumb: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
@@ -24,26 +23,10 @@ function DoneRecipes() {
       strAlcoholic: 'Alcoholic',
       strArea: 'Turkish',
       strTags: 'teste1',
-      idDrink: '15997',
+      idDrink: '178319',
       strDrink: 'Aquamarine',
       strCategory: 'Ordinary Drink',
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-    },
-    {
-      strArea: 'Turkish',
-      strTags: 'teste1',
-      idDrink: '17222',
-      strDrink: 'A1',
-      strCategory: 'Cocktail',
-      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg',
-    },
-    {
-      strArea: 'Turkish',
-      strTags: 'test2',
-      idMeal: '53060',
-      strMeal: 'Burek',
-      strCategory: 'Side',
-      strMealThumb: 'https://www.themealdb.com/images/media/meals/tkxquw1628771028.jpg',
     },
   ];
 

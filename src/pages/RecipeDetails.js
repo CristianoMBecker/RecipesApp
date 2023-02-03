@@ -38,6 +38,7 @@ function RecipeDetails(props) {
 
   useEffect(() => {
     fetchRecipe();
+    console.log(recipeApi);
   }, []);
 
   return (

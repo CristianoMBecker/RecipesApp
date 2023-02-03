@@ -15,8 +15,18 @@ function DetailsCard({
   alcool,
   recomendations,
   pathname,
+  id,
 }) {
   const history = useHistory();
+
+  const inProgressRecipes = {
+    drinks: {
+      178319: [],
+    },
+    meals: {
+      52771: [],
+    },
+  };
 
   const settings = {
     dots: false,
@@ -24,6 +34,15 @@ function DetailsCard({
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 1,
+  };
+
+  const startOrInProgress = () => {
+    if (pathname.includes('drinks') && inProgressRecipes.drinks[id]) {
+      return 'Continue Recipe';
+    } if (pathname.includes('meals') && inProgressRecipes.meals[id]) {
+      return 'Continue Recipe';
+    }
+    return 'Start Recipe';
   };
 
   const clickChange = () => {
@@ -102,7 +121,9 @@ function DetailsCard({
           data-testid="start-recipe-btn"
           onClick={ clickChange }
         >
-          Start Recipe
+          {
+            startOrInProgress()
+          }
         </button>
       </div>
     </div>

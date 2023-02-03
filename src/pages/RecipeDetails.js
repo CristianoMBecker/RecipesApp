@@ -54,6 +54,7 @@ function RecipeDetails(props) {
         alcool={ pathname.includes('drinks') ? recipeApi.strAlcoholic : null }
         recomendations={ recomendations }
         pathname={ pathname }
+        id={ id }
       />
     </main>
   );

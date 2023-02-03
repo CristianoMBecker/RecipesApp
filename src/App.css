@@ -28,7 +28,7 @@ footer {
   background-color: lightblue;
   height: 40px;
   position: fixed;
-  top: 600px;
+  bottom: 0;
   width: 100%;
 }
 

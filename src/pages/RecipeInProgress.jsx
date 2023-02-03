@@ -7,6 +7,7 @@ import './RecipeInProgress.css';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import RecipesContext from '../context/RecipesContext';
+import shareIcon from '../images/shareIcon.svg';
 
 function RecipeInProgress({ history }) {
   const { isAllChecked } = useContext(RecipesContext);
@@ -156,7 +157,7 @@ function RecipeInProgress({ history }) {
           setLinkCopied(true);
         } }
       >
-        Share
+        <img src={ shareIcon } alt="ícone de compartilhamento" />
 
       </button>
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import copy from 'clipboard-copy';
 import IngredientsList from '../components/IngredientsList';
 import useFetch from '../hooks/useFetch';
@@ -6,13 +6,17 @@ import './RecipeInProgress.css';
 
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import RecipesContext from '../context/RecipesContext';
+import shareIcon from '../images/shareIcon.svg';
 
 function RecipeInProgress({ history }) {
+  const { isAllChecked } = useContext(RecipesContext);
   const { makeFetch, isLoading } = useFetch();
+
   const [recipeApi, setRecipeApi] = useState([{}]);
   const [linkCopied, setLinkCopied] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
-  // const { checkedItems, setCheckedItems } = useContext(RecipesContext);
+
   const { location: { pathname } } = history;
 
   const id = pathname.split('/')[2];
@@ -102,11 +106,32 @@ function RecipeInProgress({ history }) {
       localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
     }
   };
+  const onclick = () => {
+    const tags = recipeApi[0].strTags ? recipeApi[0].strTags.split(',') : [];
+    const dateNow = new Date().toISOString();
+    const isDrink = currPathName === 'drinks';
+    const currId = isDrink ? recipeApi[0].idDrink : recipeApi[0].idMeal;
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+    const newRecipe = {
+      id: currId,
+      type: isDrink ? 'drink' : 'meal',
+      nationality: !isDrink ? recipeApi[0].strArea : '',
+      category: recipeApi[0].strCategory,
+      alcoholicOrNot: isDrink ? recipeApi[0].strAlcoholic : '',
+      name: isDrink ? recipeApi[0].strDrink : recipeApi[0].strMeal,
+      image: isDrink ? recipeApi[0].strDrinkThumb : recipeApi[0].strMealThumb,
+      doneDate: dateNow,
+      tags,
+    };
+    localStorage
+      .setItem('doneRecipes', JSON.stringify([...doneRecipes, newRecipe]));
+
+    history.push('/done-recipes');
+  };
 
   return (
     <div className="recipe-in-progress-content">
 
-      in progress
       <h1 data-testid="recipe-title">
 
         {pathname.includes('drinks') ? recipeApi[0].strDrink : recipeApi[0].strMeal}
@@ -128,12 +153,11 @@ function RecipeInProgress({ history }) {
       <button
         data-testid="share-btn"
         onClick={ () => {
-          console.log(`http://localhost:3000/${currPathName}/${id}`);
           copy(`http://localhost:3000/${currPathName}/${id}`);
           setLinkCopied(true);
         } }
       >
-        Share
+        <img src={ shareIcon } alt="ícone de compartilhamento" />
 
       </button>
 
@@ -165,12 +189,14 @@ function RecipeInProgress({ history }) {
       <p data-testid="instructions">
         { recipeApi.strInstructions}
       </p>
-
       <button
+        className="finish-recipe-btn"
         data-testid="finish-recipe-btn"
+        style={ { position: 'fixed', bottom: '0' } }
+        disabled={ isAllChecked }
+        onClick={ onclick }
       >
         Finish
-
       </button>
     </div>
   );

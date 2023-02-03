@@ -1,13 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import './IngredientsList.css';
+import RecipesContext from '../context/RecipesContext';
 
 function IngredientsList({ ingredients, id, currPathName, isLoading }) {
   const [checkedItems, setCheckedItems] = useState({});
+
+  const { setIsAllChecked } = useContext(RecipesContext);
 
   useEffect(() => {
     const inProgress = JSON.parse(localStorage.getItem('inProgress')) || {};
     setCheckedItems(inProgress[currPathName] ? inProgress[currPathName][id] : {});
   }, [isLoading]);
+
+  useEffect(() => {
+    if (checkedItems
+       && typeof checkedItems === 'object' && Object.keys(checkedItems).length > 0) {
+      const values = Object.values(checkedItems);
+      if (values.length === ingredients.length) {
+        const allIsChecked = values.every((v) => v === true);
+
+        setIsAllChecked(!allIsChecked);
+      }
+    }
+  }, [checkedItems]);
 
   const handleChange = (e) => {
     setCheckedItems({
@@ -28,7 +44,6 @@ function IngredientsList({ ingredients, id, currPathName, isLoading }) {
     };
     localStorage.setItem('inProgress', JSON.stringify(newInProgress));
   };
-
   return (
     <ul>
       {

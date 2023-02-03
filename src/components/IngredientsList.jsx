@@ -19,7 +19,7 @@ function IngredientsList({ ingredients, id, currPathName, isLoading }) {
       const values = Object.values(checkedItems);
       if (values.length === ingredients.length) {
         const allIsChecked = values.every((v) => v === true);
-        console.log(!allIsChecked);
+
         setIsAllChecked(!allIsChecked);
       }
     }

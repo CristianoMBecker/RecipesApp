@@ -105,7 +105,6 @@ function RecipeInProgress({ history }) {
       localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
     }
   };
-  console.log(recipeApi[0]);
   const onclick = () => {
     const tags = recipeApi[0].strTags ? recipeApi[0].strTags.split(',') : [];
     const dateNow = new Date().toISOString();
@@ -153,7 +152,6 @@ function RecipeInProgress({ history }) {
       <button
         data-testid="share-btn"
         onClick={ () => {
-          console.log(`http://localhost:3000/${currPathName}/${id}`);
           copy(`http://localhost:3000/${currPathName}/${id}`);
           setLinkCopied(true);
         } }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import copy from 'clipboard-copy';
 import IngredientsList from '../components/IngredientsList';
 import useFetch from '../hooks/useFetch';
@@ -6,13 +6,16 @@ import './RecipeInProgress.css';
 
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import RecipesContext from '../context/RecipesContext';
 
 function RecipeInProgress({ history }) {
+  const { isAllChecked } = useContext(RecipesContext);
   const { makeFetch, isLoading } = useFetch();
+
   const [recipeApi, setRecipeApi] = useState([{}]);
   const [linkCopied, setLinkCopied] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
-  // const { checkedItems, setCheckedItems } = useContext(RecipesContext);
+
   const { location: { pathname } } = history;
 
   const id = pathname.split('/')[2];
@@ -102,7 +105,7 @@ function RecipeInProgress({ history }) {
       localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
     }
   };
-
+  console.log(isAllChecked);
   return (
     <div className="recipe-in-progress-content">
 
@@ -164,7 +167,14 @@ function RecipeInProgress({ history }) {
       <p data-testid="instructions">
         { recipeApi.strInstructions}
       </p>
-
+      <button
+        className="finish-recipe-btn"
+        data-testid="finish-recipe-btn"
+        style={ { position: 'fixed', bottom: '0' } }
+        disabled={ isAllChecked }
+      >
+        Finish
+      </button>
     </div>
   );
 }

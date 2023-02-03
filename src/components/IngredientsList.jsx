@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './IngredientsList.css';
+import RecipesContext from '../context/RecipesContext';
 
 function IngredientsList({ ingredients, id, currPathName, isLoading }) {
   const [checkedItems, setCheckedItems] = useState({});
 
-  const [isAllChecked, setIsAllChecked] = useState(false);
+  const { setIsAllChecked } = useContext(RecipesContext);
 
   useEffect(() => {
     const inProgress = JSON.parse(localStorage.getItem('inProgress')) || {};
@@ -13,13 +14,12 @@ function IngredientsList({ ingredients, id, currPathName, isLoading }) {
   }, [isLoading]);
 
   useEffect(() => {
-    console.log(isAllChecked);
     if (Object.keys(checkedItems).length > 0) {
       const values = Object.values(checkedItems);
       if (values.length === ingredients.length) {
         const allIsChecked = values.every((v) => v === true);
-
-        setIsAllChecked(allIsChecked);
+        console.log(!allIsChecked);
+        setIsAllChecked(!allIsChecked);
       }
     }
   }, [checkedItems]);
@@ -43,48 +43,30 @@ function IngredientsList({ ingredients, id, currPathName, isLoading }) {
     };
     localStorage.setItem('inProgress', JSON.stringify(newInProgress));
   };
-
-  console.log(isAllChecked);
   return (
-    <>
-      <ul>
-        {
-          ingredients.map((ingredient, index) => (
-            <div key={ `${ingredient}-${index}` }>
-              <label
-                data-testid={ `${index}-ingredient-step` }
-                htmlFor={ `${index}-ingredient-step` }
-                style={ { textDecoration: checkedItems[`${index}-ingredient-step`]
-                  ? 'line-through solid rgb(0, 0, 0)' : 'none' } }
-              >
-                <input
-                  id={ `${index}-ingredient-step` }
-                  type="checkbox"
-                  name={ `${index}-ingredient-step` }
-                  checked={ checkedItems[`${index}-ingredient-step`] || false }
-                  onChange={ handleChange }
-                />
-                {ingredient}
-              </label>
-            </div>
-          ))
-        }
-      </ul>
-
+    <ul>
       {
-        isAllChecked
-        && (
-          <button
-            className="finish-recipe-btn"
-            data-testid="finish-recipe-btn"
-            style={ { position: 'fixed', bottom: '0' } }
-          >
-            Finish
-          </button>
-        )
+        ingredients.map((ingredient, index) => (
+          <div key={ `${ingredient}-${index}` }>
+            <label
+              data-testid={ `${index}-ingredient-step` }
+              htmlFor={ `${index}-ingredient-step` }
+              style={ { textDecoration: checkedItems[`${index}-ingredient-step`]
+                ? 'line-through solid rgb(0, 0, 0)' : 'none' } }
+            >
+              <input
+                id={ `${index}-ingredient-step` }
+                type="checkbox"
+                name={ `${index}-ingredient-step` }
+                checked={ checkedItems[`${index}-ingredient-step`] || false }
+                onChange={ handleChange }
+              />
+              {ingredient}
+            </label>
+          </div>
+        ))
       }
-
-    </>
+    </ul>
   );
 }
 

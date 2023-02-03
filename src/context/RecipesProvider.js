@@ -4,14 +4,16 @@ import RecipesContext from './RecipesContext';
 function RecipesProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
   const [recipeApi, setRecipeApi] = useState([]);
+  const [isAllChecked, setIsAllChecked] = useState(true);
 
   const values = useMemo(() => ({
     recipes,
     setRecipes,
     recipeApi,
     setRecipeApi,
-
-  }), [recipes, recipeApi]);
+    isAllChecked,
+    setIsAllChecked,
+  }), [recipes, recipeApi, isAllChecked]);
   return (
     <RecipesContext.Provider value={ values }>
       {children}

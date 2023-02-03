@@ -14,7 +14,8 @@ function IngredientsList({ ingredients, id, currPathName, isLoading }) {
   }, [isLoading]);
 
   useEffect(() => {
-    if (Object.keys(checkedItems).length > 0) {
+    if (checkedItems
+       && typeof checkedItems === 'object' && Object.keys(checkedItems).length > 0) {
       const values = Object.values(checkedItems);
       if (values.length === ingredients.length) {
         const allIsChecked = values.every((v) => v === true);

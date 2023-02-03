@@ -105,7 +105,30 @@ function RecipeInProgress({ history }) {
       localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
     }
   };
-  console.log(isAllChecked);
+  console.log(recipeApi[0]);
+  const onclick = () => {
+    const tags = recipeApi[0].strTags ? recipeApi[0].strTags.split(',') : [];
+    const dateNow = new Date().toISOString();
+    const isDrink = currPathName === 'drinks';
+    const currId = isDrink ? recipeApi[0].idDrink : recipeApi[0].idMeal;
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+    const newRecipe = {
+      id: currId,
+      type: isDrink ? 'drink' : 'meal',
+      nationality: !isDrink ? recipeApi[0].strArea : '',
+      category: recipeApi[0].strCategory,
+      alcoholicOrNot: isDrink ? recipeApi[0].strAlcoholic : '',
+      name: isDrink ? recipeApi[0].strDrink : recipeApi[0].strMeal,
+      image: isDrink ? recipeApi[0].strDrinkThumb : recipeApi[0].strMealThumb,
+      doneDate: dateNow,
+      tags,
+    };
+    localStorage
+      .setItem('doneRecipes', JSON.stringify([...doneRecipes, newRecipe]));
+
+    history.push('/done-recipes');
+  };
+
   return (
     <div className="recipe-in-progress-content">
 
@@ -172,6 +195,7 @@ function RecipeInProgress({ history }) {
         data-testid="finish-recipe-btn"
         style={ { position: 'fixed', bottom: '0' } }
         disabled={ isAllChecked }
+        onClick={ onclick }
       >
         Finish
       </button>

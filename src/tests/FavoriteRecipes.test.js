@@ -25,7 +25,10 @@ const favoriteRecipes = [
   },
 ];
 describe('renders the recipes page and ...', () => {
-  localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+  beforeEach(() => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+  });
+
   test('when clicking on the Drinks button, the recipes are filtered', () => {
     renderWithRouter(<RecipesProvider><FavoriteRecipes /></RecipesProvider>);
 
@@ -70,5 +73,23 @@ describe('renders the recipes page and ...', () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('http://localhost:3000/meals/52771');
 
     expect(screen.getByText('Link copied!')).toBeInTheDocument();
+  });
+});
+
+describe('renders favorite recipes page without information on localStarage and...', () => {
+  beforeEach(() => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+  });
+  it('if no comiad is rendered', () => {
+    renderWithRouter(
+      <RecipesProvider><FavoriteRecipes /></RecipesProvider>,
+    );
+    const title = screen.getByRole('heading', { name: /favorite recipes/i });
+
+    expect(title).toBeInTheDocument();
+
+    screen.debug();
+
+    expect();
   });
 });

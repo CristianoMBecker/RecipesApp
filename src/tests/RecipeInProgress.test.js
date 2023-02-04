@@ -172,7 +172,7 @@ describe('test if the recipeInProgress page is rendered', () => {
       history.push(routes.oneMeal);
     });
 
-    const shareBtn = await screen.findByRole('button', { name: /share/i });
+    const shareBtn = await screen.findByRole('img', { name: /ícone de compartilhamento/i });
 
     fireEvent.click(shareBtn);
 
@@ -322,6 +322,15 @@ describe('test if the recipeInProgress page is rendered', () => {
     });
   });
   test('if when rendering the page localStorage is called', async () => {
+    const inProgress = {
+      meals: {
+        52771: {
+          '0-ingredient-step': true,
+        },
+      },
+      drinks: {},
+    };
+
     global.fetch = jest.fn().mockImplementation((url) => {
       switch (url) {
       case `${endPoints.meal}52771`:
@@ -340,6 +349,10 @@ describe('test if the recipeInProgress page is rendered', () => {
       history.push(routes.oneMeal);
     });
 
-    expect(window.localStorage).toHaveBeenCalled();
+    const checkboxEls = await screen.findAllByRole('checkbox');
+    expect(checkboxEls[0]).toBeInTheDocument();
+
+    screen.debug();
+    expect(checkboxEls[0].checked).toBe(true);
   });
 });

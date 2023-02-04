@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
-function Profile({ history }) {
+function Profile() {
   const [email, setEmail] = useState('');
   useEffect(() => {
     const emailObj = JSON.parse(localStorage.getItem('user'));
     setEmail(emailObj.email);
   }, []);
 
+  const history = useHistory();
   return (
     <div>
       <Header title="Profile" showSearch={ false } />
@@ -42,11 +43,5 @@ function Profile({ history }) {
     </div>
   );
 }
-
-Profile.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-};
 
 export default Profile;

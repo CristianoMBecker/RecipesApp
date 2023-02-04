@@ -18,6 +18,7 @@ const routes = {
 };
 
 const whiteHeartIcon = 'whiteHeartIcon.svg';
+const blackHeartIcon = 'blackHeartIcon.svg';
 
 describe('test if the recipeInProgress page is rendered', () => {
   afterEach(() => {
@@ -172,7 +173,7 @@ describe('test if the recipeInProgress page is rendered', () => {
       history.push(routes.oneMeal);
     });
 
-    const shareBtn = await screen.findByRole('img', { name: /ícone de compartilhamento/i });
+    const shareBtn = screen.getByRole('img', { name: /ícone de compartilhamento/i });
 
     fireEvent.click(shareBtn);
 
@@ -206,8 +207,22 @@ describe('test if the recipeInProgress page is rendered', () => {
 
     fireEvent.click(favoriteIcon);
 
-    expect(favoriteIcon).toHaveAttribute('src', 'blackHeartIcon.svg');
+    expect(favoriteIcon).toHaveAttribute('src', blackHeartIcon);
+
+    act(() => {
+      history.push('/');
+    });
+
+    expect(history.location.pathname).toBe('/');
+
+    act(() => {
+      history.push(routes.oneMeal);
+    });
+
+    const favoriteIcon2 = await screen.findByRole('img', { name: /ícone de favoritos/i });
+    expect(favoriteIcon2).toHaveAttribute('src', blackHeartIcon);
   });
+
   test('tests if it is possible to remove a recipe from favorites', async () => {
     global.fetch = jest.fn().mockImplementation((url) => {
       switch (url) {
@@ -232,7 +247,7 @@ describe('test if the recipeInProgress page is rendered', () => {
 
     fireEvent.click(favoriteIcon);
 
-    expect(favoriteIcon).toHaveAttribute('src', 'blackHeartIcon.svg');
+    expect(favoriteIcon).toHaveAttribute('src', blackHeartIcon);
 
     fireEvent.click(favoriteIcon);
 
@@ -321,18 +336,55 @@ describe('test if the recipeInProgress page is rendered', () => {
       expect(checkbox.checked).toBe(true);
     });
   });
-  test('if when rendering the page localStorage is called', async () => {
-    const inProgress = {
-      meals: {
-        52771: {
-          '0-ingredient-step': true,
-        },
-      },
-      drinks: {},
-    };
-
+  test('if localStorage is called when rendering the page', async () => {
     global.fetch = jest.fn().mockImplementation((url) => {
       switch (url) {
+      case `${endPoints.drink}178319`:
+        return Promise.resolve({
+          ok: true,
+          json: jest.fn().mockResolvedValue(oneDrink),
+        });
+      case `${endPoints.meal}52771`:
+        return Promise.resolve({
+          ok: true,
+          json: jest.fn().mockResolvedValue(oneMeal),
+        });
+      default:
+        return {};
+      }
+    });
+
+    const { history } = renderWithRouter(<RecipesProvider><App /></RecipesProvider>);
+
+    act(() => {
+      history.push(routes.oneDrink);
+    });
+
+    const ingredient0 = await screen.findByText('Hpnotiq 2 oz');
+    expect(ingredient0).toBeInTheDocument();
+    const checkBoxeEls = await screen.findAllByRole('checkbox');
+    expect(checkBoxeEls[0].checked).toBe(false);
+    fireEvent.click(checkBoxeEls[0]);
+    expect(history.location.pathname).toBe('/drinks/178319/in-progress');
+
+    act(() => {
+      history.push('/');
+    });
+    expect(history.location.pathname).toBe('/');
+
+    act(() => {
+      history.push(routes.oneMeal);
+    });
+    expect(history.location.pathname).toBe(routes.oneMeal);
+  });
+  test('if localStorage is called when rendering the page', async () => {
+    global.fetch = jest.fn().mockImplementation((url) => {
+      switch (url) {
+      case `${endPoints.drink}178319`:
+        return Promise.resolve({
+          ok: true,
+          json: jest.fn().mockResolvedValue(oneDrink),
+        });
       case `${endPoints.meal}52771`:
         return Promise.resolve({
           ok: true,
@@ -349,10 +401,94 @@ describe('test if the recipeInProgress page is rendered', () => {
       history.push(routes.oneMeal);
     });
 
-    const checkboxEls = await screen.findAllByRole('checkbox');
-    expect(checkboxEls[0]).toBeInTheDocument();
+    const checkBoxeEls = await screen.findAllByRole('checkbox');
+    expect(checkBoxeEls[0].checked).toBe(false);
+    fireEvent.click(checkBoxeEls[0]);
+    expect(history.location.pathname).toBe('/meals/52771/in-progress');
 
-    screen.debug();
-    expect(checkboxEls[0].checked).toBe(true);
+    act(() => {
+      history.push('/');
+    });
+    expect(history.location.pathname).toBe('/');
+
+    act(() => {
+      history.push(routes.oneDrink);
+    });
+    expect(history.location.pathname).toBe(routes.oneDrink);
+  });
+  test('tests if clicking on the finish button is directed to the route "/done/recipes"', async () => {
+    global.fetch = jest.fn().mockImplementation((url) => {
+      switch (url) {
+      case `${endPoints.meal}52771`:
+        return Promise.resolve({
+          ok: true,
+          json: jest.fn().mockResolvedValue(oneMeal),
+        });
+      default:
+        return {};
+      }
+    });
+    const { history } = renderWithRouter(<RecipesProvider><App /></RecipesProvider>);
+
+    act(() => {
+      history.push(routes.oneMeal);
+    });
+
+    const finishBtn = await screen.findByRole('button', { name: /finish/i });
+
+    expect(finishBtn.disabled).toBe(true);
+
+    const checkboxEls = await screen.findAllByRole('checkbox');
+
+    expect(checkboxEls).toHaveLength(8);
+
+    checkboxEls.forEach((checkbox) => {
+      fireEvent.click(checkbox);
+    });
+
+    expect(finishBtn.disabled).toBe(false);
+
+    fireEvent.click(finishBtn);
+
+    expect(history.location.pathname).toBe('/done-recipes');
+  });
+  test('test if clicking on the favorite icon changes color', async () => {
+    global.fetch = jest.fn().mockImplementation((url) => {
+      switch (url) {
+      case `${endPoints.drink}178319`:
+        return Promise.resolve({
+          ok: true,
+          json: jest.fn().mockResolvedValue(oneDrink),
+        });
+      default:
+        return {};
+      }
+    });
+
+    const { history } = renderWithRouter(<RecipesProvider><App /></RecipesProvider>);
+
+    act(() => {
+      history.push(routes.oneDrink);
+    });
+
+    const favoriteIcon = await screen.findByRole('img', { name: /ícone de favoritos/i });
+    expect(favoriteIcon).toHaveAttribute('src', whiteHeartIcon);
+
+    fireEvent.click(favoriteIcon);
+
+    expect(favoriteIcon).toHaveAttribute('src', blackHeartIcon);
+
+    act(() => {
+      history.push('/');
+    });
+
+    expect(history.location.pathname).toBe('/');
+
+    act(() => {
+      history.push(routes.oneDrink);
+    });
+
+    const favoriteIcon2 = await screen.findByRole('img', { name: /ícone de favoritos/i });
+    expect(favoriteIcon2).toHaveAttribute('src', blackHeartIcon);
   });
 });

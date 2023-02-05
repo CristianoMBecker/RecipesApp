@@ -63,9 +63,18 @@ function SearchBar({ pageType }) {
 
   return (
     <form data-testid="search-bar" onSubmit={ handleSubmit }>
-      <div>
-        <label htmlFor="ingredient-search-radio">
-          Search by Ingredient
+      <input
+        className="input-group"
+        type="text"
+        placeholder="Search"
+        data-testid="search-input"
+        value={ searchTerm }
+        onChange={ (e) => setSearchTerm(e.target.value) }
+      />
+      <div className="radio-buttons">
+        <label
+          htmlFor="ingredient-search-radio"
+        >
           <input
             type="radio"
             id="ingredient-search-radio"
@@ -75,11 +84,12 @@ function SearchBar({ pageType }) {
             onChange={ (e) => setSearchType(e.target.value) }
             data-testid="ingredient-search-radio"
           />
+          Ingredient
         </label>
-      </div>
-      <div>
-        <label htmlFor="name-search-radio">
-          Search by Name
+
+        <label
+          htmlFor="name-search-radio"
+        >
           <input
             type="radio"
             id="name-search-radio"
@@ -89,11 +99,12 @@ function SearchBar({ pageType }) {
             onChange={ (e) => setSearchType(e.target.value) }
             data-testid="name-search-radio"
           />
+          Name
         </label>
-      </div>
-      <div>
-        <label htmlFor="first-letter-search-radio">
-          Search by First Letter
+
+        <label
+          htmlFor="first-letter-search-radio"
+        >
           <input
             type="radio"
             id="first-letter-search-radio"
@@ -103,18 +114,13 @@ function SearchBar({ pageType }) {
             onChange={ (e) => setSearchType(e.target.value) }
             data-testid="first-letter-search-radio"
           />
+          First Letter
         </label>
+
       </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Digite o termo de pesquisa"
-          data-testid="search-input"
-          value={ searchTerm }
-          onChange={ (e) => setSearchTerm(e.target.value) }
-        />
-        <button type="submit" data-testid="exec-search-btn">Search</button>
-      </div>
+
+      <button type="submit" data-testid="exec-search-btn">Search</button>
+
     </form>
   );
 }

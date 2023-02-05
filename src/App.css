@@ -3,10 +3,6 @@
   padding: 0;
 }
 
-body {
-  font-family: Epilogue , sans-serif;
-}
-
 .meals {
   align-items: center;
   background: #0fa36b;
@@ -20,12 +16,138 @@ body {
 }
 
 header {
-  background-color: lightblue;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   width: 100%;
+}
+
+header h1 {
+  color: rgb(65, 25, 127);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0.105em;
+  line-height: 20px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.foods-icon {
+  margin-top: 30px;
+}
+
+header nav {
+  align-items: center;
+  background-color: rgb(252, 220, 54);
+  display: flex;
+  height: 52px;
+  justify-content: space-between;
+  padding: 0 23px;
+  width: 100%;
+}
+
+button {
+  border: 1px solid black;
+}
+
+header nav button {
+  background: none;
+  border: none;
+}
+
+.logo-content-header {
+  align-items: center;
+  display: flex;
+  height: 52px;
+}
+
+.recipes-icon {
+  height: 39.27;
+  margin-right: 30px;
+  width: 42.6;
+}
+
+.nav-content {
+  align-items: center;
+  display: flex;
+  height: 52px;
+}
+
+
+.profile-icon {
+  margin: 6px 0 0 10px;
+}
+
+header form {
+  align-items: center;
+  background-color: rgb(65, 25, 127);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  width: 95%;
+}
+
+.input-group {
+  border: 1px solid rgba(177, 177, 177, 1);
+  border-radius: 5px;
+  height: 40px;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.radio-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 11px;
+  margin-top: 14px;
+  padding: 0;
+  text-align: center;
+  width: 208.16px;
+}
+
+.radio-buttons input {
+  background-color: white;
+  color: rgb(252, 220, 54);
+  margin-right: 5px;
+  width: 10.3px;
+}
+
+.radio-buttons label {
+  align-items: center;
+  color: white;
+  display: flex;
+  font-size: 9px;
+  line-height: 9px;
+}
+
+.radio-buttons input:checked + label:before {
+  background-color: rgb(252, 220, 54);
+  border-color: rgb(252, 220, 54);
+}
+
+header form button {
+  background-color: rgba(252, 196, 54, 1);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  height: 25px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease-in-out;
+  width: 208.16px;
+}
+
+header form button:active {
+  background-color: rgba(222, 166, 24, 1);
 }
 
 footer {
   background-color: lightblue;
+  border: none;
   bottom: 0;
   height: 40px;
   position: fixed;
@@ -36,10 +158,6 @@ footer {
   border-radius: 1rem;
   padding: 5px;
   width: 250px;
-}
-
-button {
-  border: 1px solid black;
 }
 
 .button-selected {

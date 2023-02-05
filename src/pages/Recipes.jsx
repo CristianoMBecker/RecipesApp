@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import RecipesContext from '../context/RecipesContext';
 import useFetch from '../hooks/useFetch';
+import './Recipes.css';
 
 function Recipes({ history }) {
   const { location: { pathname } } = history;
@@ -77,7 +78,7 @@ function Recipes({ history }) {
   };
 
   return (
-    <div>
+    <>
       <Header title={ pathname === '/drinks' ? 'Drinks' : 'Meals' } showSearch />
       <button
         data-testid="All-category-filter"
@@ -123,7 +124,7 @@ function Recipes({ history }) {
         })
       }
       <Footer />
-    </div>
+    </>
   );
 }
 

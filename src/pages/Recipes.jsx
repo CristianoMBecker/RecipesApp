@@ -2,10 +2,10 @@ import React, { useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import CardRecipe from '../components/CardRecipe';
 import Footer from '../components/Footer';
-import Header from '../components/Header';
 import RecipesContext from '../context/RecipesContext';
 import useFetch from '../hooks/useFetch';
 import './Recipes.css';
+import Header from '../components/Header';
 
 function Recipes({ history }) {
   const { location: { pathname } } = history;

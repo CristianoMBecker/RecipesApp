@@ -75,14 +75,14 @@ function Recipes({ history }) {
     }
   };
 
-  const filterByCategory = async ({ target }) => {
+  const filterByCategory = async (category) => {
     if (!toggle) {
       if (pathname === '/meals') {
-        const data = await makeFetch(`${endPoints.meals}${target.name}`);
+        const data = await makeFetch(`${endPoints.meals}${category}`);
         setRecipes(data.meals);
       }
       if (pathname === '/drinks') {
-        const data = await makeFetch(`${endPoints.drinks}${target.name}`);
+        const data = await makeFetch(`${endPoints.drinks}${category}`);
         setRecipes(data.drinks);
       }
       setToggle(true);
@@ -112,7 +112,7 @@ function Recipes({ history }) {
               <button
                 key={ strCategory }
                 data-testid={ `${strCategory}-category-filter` }
-                onClick={ filterByCategory }
+                onClick={ () => filterByCategory(strCategory) }
                 name={ strCategory }
               >
                 <img

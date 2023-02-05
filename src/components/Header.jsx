@@ -6,9 +6,35 @@ import recipesLogo from '../imagesFromFigma/recipesLogo.svg';
 import searchIcon from '../imagesFromFigma/searchIcon.svg';
 import profileIcon from '../imagesFromFigma/profileIcon.svg';
 import foods from '../imagesFromFigma/foods.svg';
+import drinksIcon from '../imagesFromFigma/drinksIcon.svg';
+import doneIcon from '../imagesFromFigma/doneIcon.svg';
+import favoriteIcon from '../imagesFromFigma/favoriteIcon.svg';
+import profileIconYellow from '../imagesFromFigma/profileIconYellow.svg';
 
 function Header({ title, showSearch }) {
   const [showSearchInput, setShowSearchInput] = useState(false);
+
+  let pageIcon;
+
+  switch (title) {
+  case 'Meals':
+    pageIcon = foods;
+    break;
+  case 'Drinks':
+    pageIcon = drinksIcon;
+    break;
+  case 'Favorite Recipes':
+    pageIcon = favoriteIcon;
+    break;
+  case 'Profile':
+    pageIcon = profileIconYellow;
+    break;
+  case 'Done Recipes':
+    pageIcon = doneIcon;
+    break;
+  default:
+    break;
+  }
 
   return (
     <header>
@@ -38,7 +64,11 @@ function Header({ title, showSearch }) {
           </Link>
         </div>
       </nav>
-      <img className="foods-icon" src={ foods } alt="foods icon" />
+      <img
+        className="page-icon"
+        src={ pageIcon }
+        alt="foods icon"
+      />
       <h1 data-testid="page-title">{title}</h1>
       {showSearchInput && (
         <SearchBar pageType={ title } />

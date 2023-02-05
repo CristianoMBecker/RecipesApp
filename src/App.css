@@ -19,6 +19,7 @@ header {
   align-items: center;
   display: flex;
   flex-direction: column;
+  margin-bottom: 12px;
   width: 100%;
 }
 
@@ -33,7 +34,7 @@ header h1 {
   text-transform: uppercase;
 }
 
-.foods-icon {
+.page-icon {
   margin-top: 30px;
 }
 
@@ -146,20 +147,19 @@ header form button:active {
 }
 
 footer {
-  background-color: lightblue;
-  border: none;
+  align-items: flex-end;
+  background-color: rgb(65, 25, 127);
   bottom: 0;
-  height: 40px;
+  display: flex;
+  height: 52px;
+  justify-content: space-between;
   position: fixed;
   width: 100%;
 }
 
-.CardRecipe {
-  border-radius: 1rem;
-  padding: 5px;
-  width: 250px;
-}
-
-.button-selected {
-  border: 2px solid green;
+footer a {
+  align-items: center;
+  display: flex;
+  height: 39.33px;
+  margin: 0 20px 4px;
 }

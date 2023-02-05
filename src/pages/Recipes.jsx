@@ -7,12 +7,27 @@ import useFetch from '../hooks/useFetch';
 import './Recipes.css';
 import Header from '../components/Header';
 
+import dessert from '../imagesFromFigma/dessert.svg';
+import breakfast from '../imagesFromFigma/breakfast.svg';
+import chicken from '../imagesFromFigma/chicken.svg';
+import goat from '../imagesFromFigma/goat.svg';
+import beef from '../imagesFromFigma/beef.svg';
+import All from '../imagesFromFigma/All.svg';
+import ordinaryDrink from '../imagesFromFigma/ordinaryDrink.svg';
+import cocktail from '../imagesFromFigma/cocktail.svg';
+import shake from '../imagesFromFigma/shake.svg';
+import other from '../imagesFromFigma/other.svg';
+import cocoa from '../imagesFromFigma/cocoa.svg';
+
 function Recipes({ history }) {
   const { location: { pathname } } = history;
   const { makeFetch } = useFetch();
   const { recipes, setRecipes } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);
   const [toggle, setToggle] = useState(false);
+
+  const mealsCategoriesIcons = [beef, breakfast, chicken, dessert, goat];
+  const drinksCategoriesIcons = [ordinaryDrink, cocktail, shake, other, cocoa];
 
   const endPoints = {
     meals: 'https://www.themealdb.com/api/json/v1/1/filter.php?c=',
@@ -80,49 +95,56 @@ function Recipes({ history }) {
   return (
     <>
       <Header title={ pathname === '/drinks' ? 'Drinks' : 'Meals' } showSearch />
-      <button
-        data-testid="All-category-filter"
-        onClick={ clearFilters }
-      >
-        All
+      <section className="filters-content">
+        <button
+          data-testid="All-category-filter"
+          onClick={ clearFilters }
+        >
+          <img src={ All } alt="all button" />
 
-      </button>
-      {
-        categories.map(({ strCategory }, index) => {
-          if (index > Number('4')) {
-            return;
-          }
-          return (
-            <button
-              key={ strCategory }
-              data-testid={ `${strCategory}-category-filter` }
-              onClick={ filterByCategory }
-              name={ strCategory }
-            >
-              {strCategory }
-
-            </button>
-          );
-        })
-      }
-      {
-        recipes.map((recipe, index) => {
-          if (index > Number('11')) {
-            return;
-          }
-          const nameItem = recipe.strMeal || recipe.strDrink;
-          const image = recipe.strMealThumb || recipe.strDrinkThumb;
-          return (
-            <CardRecipe
-              key={ recipe.idDrink || recipe.idMeal }
-              index={ index }
-              nameItem={ nameItem }
-              image={ image }
-              item={ { idDrink: recipe.idDrink, idMeal: recipe.idMeal } }
-            />
-          );
-        })
-      }
+        </button>
+        {
+          categories.map(({ strCategory }, index) => {
+            if (index > Number('4')) {
+              return;
+            }
+            return (
+              <button
+                key={ strCategory }
+                data-testid={ `${strCategory}-category-filter` }
+                onClick={ filterByCategory }
+                name={ strCategory }
+              >
+                <img
+                  src={ pathname === '/drinks' ? drinksCategoriesIcons[index]
+                    : mealsCategoriesIcons[index] }
+                  alt="category icon"
+                />
+              </button>
+            );
+          })
+        }
+      </section>
+      <main className="recipes-content">
+        {
+          recipes.map((recipe, index) => {
+            if (index > Number('11')) {
+              return;
+            }
+            const nameItem = recipe.strMeal || recipe.strDrink;
+            const image = recipe.strMealThumb || recipe.strDrinkThumb;
+            return (
+              <CardRecipe
+                key={ recipe.idDrink || recipe.idMeal }
+                index={ index }
+                nameItem={ nameItem }
+                image={ image }
+                item={ { idDrink: recipe.idDrink, idMeal: recipe.idMeal } }
+              />
+            );
+          })
+        }
+      </main>
       <Footer />
     </>
   );

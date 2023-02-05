@@ -78,18 +78,14 @@ describe('renders the recipes page and ...', () => {
 
 describe('renders favorite recipes page without information on localStarage and...', () => {
   beforeEach(() => {
-    localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    localStorage.clear();
   });
-  it('if no comiad is rendered', () => {
+  it('if no recipe is rendered', () => {
     renderWithRouter(
       <RecipesProvider><FavoriteRecipes /></RecipesProvider>,
     );
-    const title = screen.getByRole('heading', { name: /favorite recipes/i });
-
-    expect(title).toBeInTheDocument();
-
+    expect(screen.getByRole('heading', { name: /no favorite recipes found!/i }))
+      .toBeInTheDocument();
     screen.debug();
-
-    expect();
   });
 });

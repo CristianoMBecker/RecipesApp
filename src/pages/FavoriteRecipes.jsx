@@ -21,7 +21,7 @@ function FavoriteRecipes() {
   const handleShareClick = (index) => {
     setCopiedCardIndex(index);
   };
-
+  console.log(favoriteRecipes);
   return (
     <div>
       <Header title="Favorite Recipes" showSearch={ false } />
@@ -49,8 +49,8 @@ function FavoriteRecipes() {
 
       </button>
 
-      {
-        favoriteRecipes.map((recipe, index) => (
+      { favoriteRecipes.length === 0 ? <h2>No favorite recipes found!</h2>
+        : favoriteRecipes.map((recipe, index) => (
           <FavoriteCard
             key={ recipe.id }
             recipe={ recipe }
@@ -58,8 +58,7 @@ function FavoriteRecipes() {
             copiedCardIndex={ copiedCardIndex }
             onShareClick={ handleShareClick }
           />
-        ))
-      }
+        ))}
     </div>
   );
 }

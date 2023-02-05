@@ -6,14 +6,17 @@ import Header from '../components/Header';
 function Profile() {
   const [email, setEmail] = useState('');
   useEffect(() => {
-    const emailObj = JSON.parse(localStorage.getItem('user')) || { email: '' };
-    setEmail(emailObj.email);
+    const emailObj = JSON.parse(localStorage.getItem('user'));
+    if (emailObj) {
+      setEmail(emailObj.email);
+    }
   }, []);
+
   const history = useHistory();
   return (
     <div>
       <Header title="Profile" showSearch={ false } />
-      <p data-testid="profile-email">{ email === null ? '' : email}</p>
+      <p data-testid="profile-email">{ email === '' ? 'user email not found' : email}</p>
       <button
         onClick={ () => { history.push('/done-recipes'); } }
         data-testid="profile-done-btn"

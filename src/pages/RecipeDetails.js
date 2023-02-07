@@ -38,24 +38,26 @@ function RecipeDetails(props) {
 
   useEffect(() => {
     fetchRecipe();
-    console.log(recipeApi);
   }, []);
 
   return (
     <main>
       <DetailsCard
-        title={ pathname.includes('drinks')
+        name={ pathname.includes('drinks')
           ? recipeApi.strDrink : recipeApi.strMeal }
         image={ pathname.includes('drinks') ? recipeApi.strDrinkThumb
           : recipeApi.strMealThumb }
         ingredient={ ingredientsAndCups }
         instruction={ recipeApi.strInstructions }
-        categoryText={ recipeApi.strCategory }
+        category={ recipeApi.strCategory }
         video={ recipeApi.strYoutube }
-        alcool={ pathname.includes('drinks') ? recipeApi.strAlcoholic : null }
+        alcoholicOrNot={ pathname.includes('drinks') ? recipeApi.strAlcoholic : null }
         recomendations={ recomendations }
         pathname={ pathname }
         id={ id }
+        type={ pathname.includes('drinks')
+          ? 'drink' : 'meal' }
+        nationality={ recipeApi.strArea ? recipeApi.strArea : null }
       />
     </main>
   );

@@ -35,7 +35,6 @@ function DetailsCard({
     slidesToShow: 2,
     slidesToScroll: 1,
   };
-
   const startOrInProgress = () => {
     if (pathname.includes('drinks') && inProgressRecipes.drinks[id]) {
       return 'Continue Recipe';
@@ -48,66 +47,73 @@ function DetailsCard({
   const clickChange = () => {
     history.push(`${pathname}/in-progress`);
   };
+  console.log(video);
+  const urlVideo = video ? video.replace('watch?v=', 'embed/') : '';
 
   return (
     <>
-      <div
-        className="background-image"
-        style={ { backgroundImage: `url(${image})` } }
-      >
+      <div className="details-card">
         <div
-          className="header-details"
+          className="background-image"
+          style={ { backgroundImage: `url(${image})` } }
         >
-          <nav>
-            {
-              pathname.includes('drinks') ? (
-                <h2 data-testid="recipe-category">{ `${categoryText} ${alcool}` }</h2>
-              ) : (<h2 data-testid="recipe-category">{ `${categoryText}` }</h2>)
-            }
-          </nav>
-          <h1 data-testid="recipe-title">{title}</h1>
+          <div
+            className="header-details"
+          >
+            <nav>
+              {
+                pathname.includes('drinks') ? (
+                  <h2 data-testid="recipe-category">{ `${categoryText} ${alcool}` }</h2>
+                ) : (<h2 data-testid="recipe-category">{ `${categoryText}` }</h2>)
+              }
+            </nav>
+            <h1 data-testid="recipe-title">{title}</h1>
+
+          </div>
+        </div>
+        <div className="ingredients-content">
+          <h2>Ingredients</h2>
+          <ul className="">
+
+            {ingredient.map((ingrediente, index) => (
+              <li
+                data-testid={ `${index}-ingredient-name-and-measure` }
+                key={ index }
+              >
+                {ingrediente}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="instructions-content">
+          <h2>Instructions</h2>
+
+          <p data-testid="instructions">{instruction}</p>
 
         </div>
-      </div>
-      <div className="ingredients-content">
-        <h2>Ingredients</h2>
-        <ul className="">
-
-          {ingredient.map((ingrediente, index) => (
-            <li
-              data-testid={ `${index}-ingredient-name-and-measure` }
-              key={ index }
-            >
-              {ingrediente}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="instructions-content">
-        <h2>Instructions</h2>
-
-        <p data-testid="instructions">{instruction}</p>
-
-      </div>
-      {
-        video
+        {
+          video
         && (
           <div
-            className="video content"
+            className="video-content"
           >
+
+            <h2>Video</h2>
             <iframe
               title="Veja no youtube"
               data-testid="video"
-              width="330"
-              height="315"
-              src={ video }
+              src={ urlVideo }
+              height="205.09px"
+              width="336px"
             />
           </div>
         )
-      }
+        }
 
+      </div>
       <div className="slider-content">
-        {/* <Slider { ...settings } className="slider">
+        <h2>Recommended</h2>
+        <Slider { ...settings }>
           {
             pathname.includes('drinks') ? (
               recomendations.map((d, index) => (
@@ -133,7 +139,7 @@ function DetailsCard({
                 </div>
               )))
           }
-        </Slider> */}
+        </Slider>
       </div>
       <button
         type="button"

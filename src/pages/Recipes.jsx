@@ -21,7 +21,7 @@ import cocoa from '../imagesFromFigma/cocoa.svg';
 
 function Recipes({ history }) {
   const { location: { pathname } } = history;
-  const { makeFetch } = useFetch();
+  const { makeFetch, isLoading } = useFetch();
   const { recipes, setRecipes } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);
   const [toggle, setToggle] = useState(false);
@@ -92,19 +92,31 @@ function Recipes({ history }) {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <i
+          className="fa-solid fa-spinner loading-icon"
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <Header title={ pathname === '/drinks' ? 'Drinks' : 'Meals' } showSearch />
-      <section className="filters-content">
-        <button
-          data-testid="All-category-filter"
-          onClick={ clearFilters }
-        >
-          <img src={ All } alt="all button" />
 
-        </button>
-        {
-          categories.map(({ strCategory }, index) => {
+      {!isLoading
+      && (
+        <section className="filters-content">
+          <button
+            data-testid="All-category-filter"
+            onClick={ clearFilters }
+          >
+            <img src={ All } alt="all button" />
+
+          </button>
+          { categories.map(({ strCategory }, index) => {
             if (index > Number('4')) {
               return;
             }
@@ -122,9 +134,9 @@ function Recipes({ history }) {
                 />
               </button>
             );
-          })
-        }
-      </section>
+          })}
+        </section>
+      )}
       <main className="recipes-content">
         {
           recipes.map((recipe, index) => {

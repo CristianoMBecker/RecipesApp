@@ -1,3 +1,21 @@
+@keyframes fade-in-pop-up {
+
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .filters-content {
   display: flex;
   justify-content: space-evenly;
@@ -6,6 +24,7 @@
 }
 
 .filters-content button {
+  animation: fade-in-pop-up 1s ease-in-out forwards;
   background: none;
   border: none;
 }
@@ -19,12 +38,14 @@
 }
 
 .card {
+  animation: fade-in-pop-up 1s ease-in-out forwards;
   color: black;
   font-size: 12px;
   font-weight: 400;
   height: 166.21px;
   margin: 4px;
   text-decoration: none;
+  transform: scale(0);
   width: 163.33px;
 }
 

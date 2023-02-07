@@ -3,6 +3,13 @@ import FavoriteCard from '../components/FavoriteCard';
 import Header from '../components/Header';
 import RecipesContext from '../context/RecipesContext';
 
+import AllBtn from '../imagesFromFigma/AllBtn.svg';
+import foodsBtn from '../imagesFromFigma/foodsBtn.svg';
+import drinksBtn from '../imagesFromFigma/drinksBtn.svg';
+import Footer from '../components/Footer';
+
+import './FavoriteRecipes.css';
+
 function FavoriteRecipes() {
   const { favoriteRecipes, setFavoriteRecipes } = useContext(RecipesContext);
   const [copiedCardIndex, setCopiedCardIndex] = useState(null);
@@ -23,31 +30,33 @@ function FavoriteRecipes() {
   };
   console.log(favoriteRecipes);
   return (
-    <div>
+    <div className="done-recipe-content">
       <Header title="Favorite Recipes" showSearch={ false } />
-      <button
-        onClick={ getFavorites }
-        data-testid="filter-by-all-btn"
-      >
-        All
+      <section className="filters-content">
+        <button
+          onClick={ getFavorites }
+          data-testid="filter-by-all-btn"
+        >
+          <img src={ AllBtn } alt="all btn" />
 
-      </button>
-      <button
-        onClick={ () => setFavoriteRecipes(favoriteRecipes
-          .filter((r) => r.type === 'meal')) }
-        data-testid="filter-by-meal-btn"
-      >
-        Meals
+        </button>
+        <button
+          onClick={ () => setFavoriteRecipes(favoriteRecipes
+            .filter((r) => r.type === 'meal')) }
+          data-testid="filter-by-meal-btn"
+        >
+          <img src={ foodsBtn } alt="foods btn" />
 
-      </button>
-      <button
-        onClick={ () => setFavoriteRecipes(favoriteRecipes
-          .filter((r) => r.type === 'drink')) }
-        data-testid="filter-by-drink-btn"
-      >
-        Drinks
+        </button>
+        <button
+          onClick={ () => setFavoriteRecipes(favoriteRecipes
+            .filter((r) => r.type === 'drink')) }
+          data-testid="filter-by-drink-btn"
+        >
+          <img src={ drinksBtn } alt="drinks Btn" />
 
-      </button>
+        </button>
+      </section>
 
       { favoriteRecipes.length === 0 ? <h2>No favorite recipes found!</h2>
         : favoriteRecipes.map((recipe, index) => (
@@ -59,6 +68,7 @@ function FavoriteRecipes() {
             onShareClick={ handleShareClick }
           />
         ))}
+      <Footer />
     </div>
   );
 }

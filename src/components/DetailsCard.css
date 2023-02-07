@@ -4,6 +4,12 @@
   flex-direction: column;
 }
 
+.details-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
 .background-image {
   background-size: cover;
   height: 211.85px;
@@ -54,8 +60,8 @@
 }
 
 .ingredients-content {
-  width: 90%;
   margin-bottom: 33px;
+  width: 90%;
 }
 
 .ingredients-content ul {
@@ -74,6 +80,7 @@
 
 .instructions-content {
   width: 90%;
+  margin-bottom: 42px;
 }
 
 .instructions-content p {
@@ -107,3 +114,16 @@
   width: 336px;
 }
 
+.video-content {
+  height: 205.09px;
+  margin-bottom: 90px;
+  width: 336px;
+}
+
+.slider-content {
+  display: flex;
+  flex-direction: column;
+  left: 10px;
+  margin-bottom: 10px;
+  width: 336px;
+}

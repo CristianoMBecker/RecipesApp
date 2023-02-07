@@ -49,12 +49,16 @@ function RecipeDetails(props) {
 
   if (isLoading) {
     return (
-      <h1>Loading...</h1>
+      <div className="loading-container">
+        <i
+          className="fa-solid fa-spinner loading-icon"
+        />
+      </div>
     );
   }
 
   return (
-    <main className="details-card">
+    <main className="details-container">
       <DetailsCard
         title={ pathname.includes('drinks')
           ? recipeApi.strDrink : recipeApi.strMeal }

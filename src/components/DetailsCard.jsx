@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import './DetailsCard.css';
 import { useHistory } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
+
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function DetailsCard({
   image,
@@ -29,21 +32,14 @@ function DetailsCard({
   };
 
   const [copyMessage, setCopyMessage] = useState(false);
+  const [isFavorite, setIsfavorite] = useState(false);
 
-  function saveRecipe(recipe) {
-    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
-    const newRecipe = {
-      id: recipe.id,
-      type: recipe.type,
-      nationality: recipe.nationality || '',
-      category: recipe.category || '',
-      alcoholicOrNot: recipe.alcoholicOrNot || '',
-      name: recipe.name,
-      image: recipe.image,
-    };
-    favoriteRecipes.push(newRecipe);
-    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
-  }
+  useEffect(() => {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'))
+    || [];
+    const isFavoriteRecipe = favoriteRecipes.some((recipe) => recipe.id === id);
+    setIsfavorite(isFavoriteRecipe);
+  }, []);
 
   const copy = (text) => {
     navigator.clipboard.writeText(text).then(
@@ -85,6 +81,27 @@ function DetailsCard({
     history.push(`${pathname}/in-progress`);
   };
 
+  const saveFavorite = () => {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    const isFavoriteRecipe = favoriteRecipes.some((recipe) => recipe.id === id);
+    if (!isFavoriteRecipe) {
+      const newRecipe = {
+        id,
+        type,
+        nationality,
+        category,
+        alcoholicOrNot,
+        name,
+        image,
+      };
+      localStorage
+        .setItem('favoriteRecipes', JSON.stringify([...favoriteRecipes, newRecipe]));
+    } else {
+      const newFavorite = favoriteRecipes.filter((recipe) => recipe.id !== id);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
+    }
+  };
+
   return (
     <div>
       <h1 data-testid="recipe-title">{name}</h1>
@@ -105,18 +122,17 @@ function DetailsCard({
       </button>
       <button
         type="button"
-        onClick={ () => saveRecipe({
-          id,
-          type,
-          nationality,
-          category,
-          alcoholicOrNot,
-          name,
-          image,
-        }) }
-        data-testid="favorite-btn"
+        onClick={ () => {
+          saveFavorite();
+          setIsfavorite(!isFavorite);
+        } }
       >
-        Favoritar
+
+        <img
+          data-testid="favorite-btn"
+          src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
+          alt="favorite button"
+        />
       </button>
       <div>
         <ul>

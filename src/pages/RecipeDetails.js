@@ -51,7 +51,7 @@ function RecipeDetails(props) {
         instruction={ recipeApi.strInstructions }
         category={ recipeApi.strCategory }
         video={ recipeApi.strYoutube }
-        alcoholicOrNot={ pathname.includes('drinks') ? recipeApi.strAlcoholic : null }
+        alcoholicOrNot={ pathname.includes('drinks') ? recipeApi.strAlcoholic : '' }
         recomendations={ recomendations }
         pathname={ pathname }
         id={ id }

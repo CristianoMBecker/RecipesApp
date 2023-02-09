@@ -61,3 +61,34 @@
 .ingredient-checkbox:checked {
   text-decoration: line-through;
 }
+
+
+.checkbox-ingredients label {
+  align-items: center;
+  display: flex;
+}
+.checkbox-ingredients input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: white;
+  border: 2px solid rgba(252, 196, 54, 1);
+  height: 17px;
+  margin-right: 10px;
+  transition: none;
+  width: 17px;
+}
+
+.checkbox-ingredients input:checked:before {
+  align-items: flex-end;
+  color: rgba(252, 196, 54, 1);
+  content: url('../imagesFromFigma/checked.svg');
+  display: flex;
+  height: 17px;
+  justify-content: flex-start;
+  margin: 0;
+  margin-left: 1px;
+  padding: 0;
+  text-align: center;
+  width: 17px;
+}

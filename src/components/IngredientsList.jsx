@@ -48,7 +48,10 @@ function IngredientsList({ ingredients, id, currPathName, isLoading }) {
     <ul>
       {
         ingredients.map((ingredient, index) => (
-          <div key={ `${ingredient}-${index}` }>
+          <div
+            className="checkbox-ingredients"
+            key={ `${ingredient}-${index}` }
+          >
             <label
               data-testid={ `${index}-ingredient-step` }
               htmlFor={ `${index}-ingredient-step` }

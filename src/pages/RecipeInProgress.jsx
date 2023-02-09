@@ -194,6 +194,7 @@ function RecipeInProgress({ history }) {
         </div>
       </div>
       <div className="ingredients-content">
+        <h3>Ingredients</h3>
         { !isLoading && <IngredientsList
           isLoading={ isLoading }
           ingredients={ ingredients }
@@ -202,6 +203,7 @@ function RecipeInProgress({ history }) {
         />}
       </div>
       <div className="instructions-content">
+        <h3>Instructions</h3>
         <p data-testid="instructions">
           { recipeApi[0].strInstructions}
         </p>
@@ -213,7 +215,7 @@ function RecipeInProgress({ history }) {
             className="video-content"
           >
 
-            <h2>Video</h2>
+            <h3>Video</h3>
             <iframe
               title="Veja no youtube"
               data-testid="video"

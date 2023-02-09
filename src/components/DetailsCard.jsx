@@ -88,7 +88,7 @@ function DetailsCard({
       const newRecipe = {
         id,
         type,
-        nationality: nationality || '',
+        nationality,
         category,
         alcoholicOrNot,
         name,

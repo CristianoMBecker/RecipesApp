@@ -64,17 +64,19 @@ function DoneRecipeCard({ recipesArray, filter }) {
               <span data-testid={ `${index}-horizontal-done-date` }>
                 {`Done in: ${item.doneDate.split('T')[0]}`}
               </span>
-              {
-                arrayTags.map((tag) => (
-                  <p
-                    className="tag"
-                    key={ tag }
-                    data-testid={ `${index}-${tag}-horizontal-tag` }
-                  >
-                    { `${tag}` }
-                  </p>
-                ))
-              }
+              <section className="tags-container">
+                {
+                  arrayTags.map((tag) => (
+                    <p
+                      className="tag"
+                      key={ tag }
+                      data-testid={ `${index}-${tag}-horizontal-tag` }
+                    >
+                      { `${tag}` }
+                    </p>
+                  ))
+                }
+              </section>
             </div>
             <button
               onClick={ () => shareLink(`${item.type}s/${item.id}`) }

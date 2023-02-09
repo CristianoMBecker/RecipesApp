@@ -15,8 +15,8 @@
 }
 
 .done-recipes-card img {
-  height: 134.85px;
-  width: 163.35px;
+  height: 132.85px;
+  width: 161.35px;
 }
 
 .done-recipes-card button {
@@ -62,4 +62,13 @@
   background-color: rgb(217, 217, 217);
   border-radius: 10px;
   text-align: center;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cards-Container {
+  margin-bottom: 50px;
 }

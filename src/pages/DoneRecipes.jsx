@@ -13,33 +13,13 @@ function DoneRecipes() {
   const [doneRecipes, setDoneRecipes] = useState([]);
 
   useEffect(() => {
-    const doneRecipesLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'));
+    const doneRecipesLocalStorage = JSON.parse(localStorage.getItem('doneRecipes')) || [];
     setDoneRecipes(doneRecipesLocalStorage);
   }, []);
 
   const changeFilter = (filterName) => {
     setFilter(filterName);
   };
-
-  const arrayDeTeste = [
-    {
-      strTags: 'Pasta, Curry',
-      strArea: 'Italian',
-      idMeal: '52771',
-      strMeal: 'Spicy Arrabiata Penne',
-      strCategory: 'Vegetarian',
-      strMealThumb: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    },
-    {
-      strAlcoholic: 'Alcoholic',
-      strArea: 'Turkish',
-      strTags: 'teste1',
-      idDrink: '178319',
-      strDrink: 'Aquamarine',
-      strCategory: 'Ordinary Drink',
-      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-    },
-  ];
 
   return (
     <div className="done-recipe-content">
@@ -70,12 +50,14 @@ function DoneRecipes() {
         </button>
       </section>
 
-      <DoneRecipeCard
-        recipesArray={ doneRecipes }
-        filter={ filter }
-      />
+      <main className="cards-Container">
+        <DoneRecipeCard
+          recipesArray={ doneRecipes }
+          filter={ filter }
+        />
 
-      <Footer />
+        <Footer />
+      </main>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
+
 import recipesAppIcon from '../imagesFromFigma/recipesAppIcon.svg';
 import recipesLogo from '../imagesFromFigma/recipesLogo.svg';
 import searchIcon from '../imagesFromFigma/searchIcon.svg';

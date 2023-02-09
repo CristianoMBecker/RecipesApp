@@ -57,17 +57,18 @@ function FavoriteRecipes() {
 
         </button>
       </section>
-
-      { favoriteRecipes.length === 0 ? <h2>No favorite recipes found!</h2>
-        : favoriteRecipes.map((recipe, index) => (
-          <FavoriteCard
-            key={ recipe.id }
-            recipe={ recipe }
-            index={ index }
-            copiedCardIndex={ copiedCardIndex }
-            onShareClick={ handleShareClick }
-          />
-        ))}
+      <main className="cards-Container">
+        { favoriteRecipes.length === 0 ? <h2>No favorite recipes found!</h2>
+          : favoriteRecipes.map((recipe, index) => (
+            <FavoriteCard
+              key={ recipe.id }
+              recipe={ recipe }
+              index={ index }
+              copiedCardIndex={ copiedCardIndex }
+              onShareClick={ handleShareClick }
+            />
+          ))}
+      </main>
       <Footer />
     </div>
   );

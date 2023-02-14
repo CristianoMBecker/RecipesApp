@@ -1,5 +1,19 @@
-.finish-recipe-btn button {
-  background-color: black;
+.finish-recipe-btn {
+  background-color: rgb(255, 204, 74);
+  border: none;
+  border-radius: 5px;
   bottom: 0;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  height: 40px;
+  margin-bottom: 10px;
   position: fixed;
+  text-transform: uppercase;
+  transition: 0.2s;
+  width: 336px;
+}
+
+.finish-recipe-btn:disabled {
+  background-color: rgba(255, 204, 74, 0.493);
 }

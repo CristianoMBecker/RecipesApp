@@ -4,10 +4,7 @@ import IngredientsList from '../components/IngredientsList';
 import useFetch from '../hooks/useFetch';
 import './RecipeInProgress.css';
 
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
 import RecipesContext from '../context/RecipesContext';
-import shareIcon from '../images/shareIcon.svg';
 
 function RecipeInProgress({ history }) {
   const { isAllChecked } = useContext(RecipesContext);
@@ -129,66 +126,107 @@ function RecipeInProgress({ history }) {
     history.push('/done-recipes');
   };
 
-  return (
-    <div className="recipe-in-progress-content">
+  const video = recipeApi[0].strYoutube;
+  const urlVideo = video ? video.replace('watch?v=', 'embed/') : '';
 
-      <h1 data-testid="recipe-title">
-
-        {pathname.includes('drinks') ? recipeApi[0].strDrink : recipeApi[0].strMeal}
-
-      </h1>
-      <img
-        src={ pathname.includes('drinks')
-          ? recipeApi[0].strDrinkThumb : recipeApi[0].strMealThumb }
-        alt={ pathname.includes('drinks') ? recipeApi[0].strDrink : recipeApi[0].strMeal }
-        data-testid="recipe-photo"
-      />
-      { !isLoading && <IngredientsList
-        isLoading={ isLoading }
-        ingredients={ ingredients }
-        id={ id }
-        currPathName={ currPathName }
-      />}
-
-      <button
-        data-testid="share-btn"
-        onClick={ () => {
-          copy(`http://localhost:3000/${currPathName}/${id}`);
-          setLinkCopied(true);
-        } }
-      >
-        <img src={ shareIcon } alt="ícone de compartilhamento" />
-
-      </button>
-
-      {linkCopied && <p>Link copied!</p>}
-      <button
-        onClick={ () => {
-          saveFavorite();
-          setIsFavorite(!isFavorite);
-        } }
-      >
-        <img
-          data-testid="favorite-btn"
-          src={ isFavorite
-            ? blackHeartIcon : whiteHeartIcon }
-          alt="ícone de favoritos"
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <i
+          className="fa-solid fa-spinner loading-icon"
         />
-      </button>
+      </div>
+    );
+  }
+
+  return (
+    <main className="recipe-in-progress-content">
+      <div
+        className="background-image"
+        style={
+          { backgroundImage: `url(${currPathName === 'drinks'
+            ? recipeApi[0].strDrinkThumb : recipeApi[0].strMealThumb})` }
+        }
+      >
+        <div className="header-in-progress">
+          <nav>
+            {
+              pathname.includes('drinks') ? (
+                <h2
+                  data-testid="recipe-category"
+                >
+                  { `${recipeApi.strCategory} ${recipeApi[0].strAlcoholic}` }
+
+                </h2>
+              ) : (<h2 data-testid="recipe-category">{recipeApi[0].strCategory}</h2>)
+            }
+            <div>
+              <button
+                data-testid="share-btn"
+                onClick={ () => {
+                  copy(`http://localhost:3000/${currPathName}/${id}`);
+                  setLinkCopied(true);
+                } }
+              >
+                <i className="fa-solid fa-share-nodes" />
+              </button>
+              <button
+                onClick={ () => {
+                  saveFavorite();
+                  setIsFavorite(!isFavorite);
+                } }
+              >
+
+                {
+                  isFavorite ? <i className="fa-solid fa-heart" />
+                    : <i className="fa-regular fa-heart" />
+                }
+              </button>
+
+              {linkCopied && <p>Link copied!</p>}
+            </div>
+          </nav>
+          <h1 data-testid="recipe-title">
+
+            {pathname.includes('drinks') ? recipeApi[0].strDrink : recipeApi[0].strMeal}
+
+          </h1>
+
+        </div>
+      </div>
+      <div className="ingredients-content">
+        <h3>Ingredients</h3>
+        { !isLoading && <IngredientsList
+          isLoading={ isLoading }
+          ingredients={ ingredients }
+          id={ id }
+          currPathName={ currPathName }
+        />}
+      </div>
+      <div className="instructions-content">
+        <h3>Instructions</h3>
+        <p data-testid="instructions">
+          { recipeApi[0].strInstructions}
+        </p>
+      </div>
       {
-        pathname.includes('drinks') ? (
-          <h2
-            data-testid="recipe-category"
+        video
+        && (
+          <div
+            className="video-content"
           >
-            { `${recipeApi.strCategory} ${recipeApi.strAlcoholic}` }
 
-          </h2>
-        ) : (<h2 data-testid="recipe-category">{recipeApi.strCategory}</h2>)
+            <h3>Video</h3>
+            <iframe
+              title="Veja no youtube"
+              data-testid="video"
+              src={ urlVideo }
+              height="205.09px"
+              width="336px"
+            />
+          </div>
+        )
       }
-
-      <p data-testid="instructions">
-        { recipeApi.strInstructions}
-      </p>
       <button
         className="finish-recipe-btn"
         data-testid="finish-recipe-btn"
@@ -198,7 +236,7 @@ function RecipeInProgress({ history }) {
       >
         Finish
       </button>
-    </div>
+    </main>
   );
 }
 

@@ -2,8 +2,6 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import { Link } from 'react-router-dom';
-import shareIcon from '../images/shareIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
 import RecipesContext from '../context/RecipesContext';
 
 function FavoriteCard({
@@ -27,7 +25,7 @@ function FavoriteCard({
   };
 
   return (
-    <div>
+    <div className="done-recipes-card">
       <Link to={ `/${type}s/${id}` }>
         <img
           className="recomImg"
@@ -36,56 +34,51 @@ function FavoriteCard({
           alt="imagem da receita"
         />
       </Link>
-      <Link
-        data-testid={ `${index}-horizontal-name` }
-        to={ `/${type}s/${id}` }
-      >
-        <h1>{name}</h1>
-      </Link>
-      {type === 'meal'
-        ? (
-          <h2 data-testid={ `${index}-horizontal-top-text` }>
-            {`${nationality} - ${category}`}
-          </h2>
-        ) : (
-          <h2 data-testid={ `${index}-horizontal-top-text` }>{category}</h2>
-        )}
-      {
-        type === 'drink' && (
-          <h2 data-testid={ `${index}-horizontal-top-text` }>
-            {alcoholicOrNot}
-          </h2>
-        )
-      }
-      <button
-        onClick={ () => {
-          copy(`http://localhost:3000/${type}s/${id}`);
-          onShareClick(index);
-        } }
-      >
-        <img
-          data-testid={ `${index}-horizontal-share-btn` }
-          src={ shareIcon }
-          alt="ícone compartilhar"
-
-        />
-      </button>
-      {
-        index === copiedCardIndex && (
-          <p>
-            Link copied!
-          </p>
-        )
-      }
-      <button
-        onClick={ removeFavorite }
-      >
-        <img
-          data-testid={ `${index}-horizontal-favorite-btn` }
-          src={ blackHeartIcon }
-          alt="ícone de desfavoritar"
-        />
-      </button>
+      <div className="card-text">
+        <Link
+          data-testid={ `${index}-horizontal-name` }
+          to={ `/${type}s/${id}` }
+        >
+          <h2>{name}</h2>
+        </Link>
+        {type === 'meal'
+          ? (
+            <p data-testid={ `${index}-horizontal-top-text` }>
+              {`${nationality} - ${category}`}
+            </p>
+          ) : (
+            <h2 data-testid={ `${index}-horizontal-top-text` }>{category}</h2>
+          )}
+        {
+          type === 'drink' && (
+            <h2 data-testid={ `${index}-horizontal-top-text` }>
+              {alcoholicOrNot}
+            </h2>
+          )
+        }
+        <div className="buttons-content">
+          <button
+            onClick={ () => {
+              copy(`http://localhost:3000/${type}s/${id}`);
+              onShareClick(index);
+            } }
+          >
+            <i className="fa-solid fa-share-nodes" />
+          </button>
+          {
+            index === copiedCardIndex && (
+              <p>
+                Link copied!
+              </p>
+            )
+          }
+          <button
+            onClick={ removeFavorite }
+          >
+            <i className="fa-solid fa-heart" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

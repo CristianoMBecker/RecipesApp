@@ -1,3 +1,74 @@
-.recipeImg {
-  width: 290px;
+.done-recipe-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.done-recipes-card {
+  align-items: flex-start;
+  border: 0.51px solid rgb(177, 177, 177);
+  border-radius: 5px;
+  display: flex;
+  height: 135px;
+  margin-bottom: 15px;
+  width: 318px;
+}
+
+.done-recipes-card img {
+  height: 132.85px;
+  width: 161.35px;
+}
+
+.done-recipes-card button {
+  background: none;
+  border: none;
+  color: rgb(252, 196, 54);
+  margin-right: 5px;
+}
+
+.done-recipes-card i {
+  font-size: 20px;
+}
+
+.card-text {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 4px 15px 15px;
+}
+
+.card-text a {
+  color: black;
+  text-decoration: none;
+}
+
+.card-text h2 {
+  font-size: 12px;
+  margin: 0;
+}
+
+.card-text p {
+  color: rgba(121, 125, 134, 1);
+  font-size: 9px;
+  margin: 0;
+  margin-bottom: 23px;
+}
+
+.card-text span {
+  font-size: 9px;
+  margin-bottom: 32px;
+}
+
+.tag {
+  background-color: rgb(217, 217, 217);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cards-Container {
+  margin-bottom: 50px;
 }

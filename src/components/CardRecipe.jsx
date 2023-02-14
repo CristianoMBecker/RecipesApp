@@ -11,19 +11,17 @@ function CardRecipe({ index, nameItem, image, item }) {
         data-testid={ `${index}-recipe-card` }
         className="recipe-card"
       >
-        <div className="card-image-container">
-          <img
-            className="CardRecipe"
-            data-testid={ `${index}-card-img` }
-            src={ image }
-            alt={ nameItem }
-          />
-        </div>
-        <div className="cardTitle-container">
-          <h2 data-testid={ `${index}-card-name` }>
-            {nameItem}
-          </h2>
-        </div>
+
+        <img
+          data-testid={ `${index}-card-img` }
+          src={ image }
+          alt={ nameItem }
+        />
+
+        <h2 data-testid={ `${index}-card-name` }>
+          {nameItem}
+        </h2>
+
       </div>
     </Link>
   );

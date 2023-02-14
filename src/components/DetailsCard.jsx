@@ -80,6 +80,8 @@ function DetailsCard({
   const clickChange = () => {
     history.push(`${pathname}/in-progress`);
   };
+  console.log(video);
+  const urlVideo = video ? video.replace('watch?v=', 'embed/') : '';
 
   const saveFavorite = () => {
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
@@ -103,38 +105,51 @@ function DetailsCard({
   };
 
   return (
-    <div>
-      <h1 data-testid="recipe-title">{name}</h1>
-      <img src={ image } alt={ name } data-testid="recipe-photo" />
-      <button
-        data-testid="share-btn"
-        onClick={ () => shareLink(pathname.includes('meals')
-          ? `meals/${id}` : `drinks/${id}`) }
-        type="button"
+    <>
+      <div
+        className="background-image"
+        style={ { backgroundImage: `url(${image})` } }
       >
-        <img
-          src={ shareIcon }
-          alt="compartilhar"
-        />
-        {
-          (copyMessage && 'Link copied!')
-        }
-      </button>
-      <button
-        type="button"
-        onClick={ () => {
-          saveFavorite();
-          setIsfavorite(!isFavorite);
-        } }
-      >
+        <div className="header-details">
+          <nav>
+            {pathname.includes('drinks') ? (
+              <h2 data-testid="recipe-category">{`${category} - ${alcoholicOrNot}`}</h2>
+            ) : (
+              <h2 data-testid="recipe-category">{`${category}`}</h2>
+            )}
+            <div>
+              <button
+                data-testid="share-btn"
+                onClick={ () => shareLink(pathname.includes('meals')
+                  ? `meals/${id}` : `drinks/${id}`) }
+                type="button"
+              >
+                <i className="fa-solid fa-share-nodes" />
 
-        <img
-          data-testid="favorite-btn"
-          src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
-          alt="favorite button"
-        />
-      </button>
-      <div>
+              </button>
+              <button
+                type="button"
+                onClick={ () => {
+                  saveFavorite();
+                  setIsfavorite(!isFavorite);
+                } }
+              >
+                { isFavorite ? <i className="fa-solid fa-heart" />
+                  : <i className="fa-regular fa-heart" /> }
+              </button>
+              {
+                (copyMessage && <p>Link copied!</p>)
+              }
+            </div>
+
+          </nav>
+          <h1 data-testid="recipe-title">{name}</h1>
+        </div>
+
+      </div>
+
+      <div className="ingredients-content">
+        <h3>Ingredients</h3>
         <ul>
           {ingredient.map((ingrediente, index) => (
             <li
@@ -145,14 +160,25 @@ function DetailsCard({
             </li>
           ))}
         </ul>
-        {pathname.includes('drinks') ? (
-          <h2 data-testid="recipe-category">{`${category} ${alcoholicOrNot}`}</h2>
-        ) : (
-          <h2 data-testid="recipe-category">{`${category}`}</h2>
-        )}
       </div>
-      <p data-testid="instructions">{instruction}</p>
-      <div>
+      <div className="instructions-content">
+        <h3>Instructions</h3>
+        <p>{ instruction}</p>
+      </div>
+      {video && (
+        <div className="video-content">
+          <h3>Video</h3>
+          <iframe
+            title="Veja no youtube"
+            data-testid="video"
+            height="205.09px"
+            width="336px"
+            src={ urlVideo }
+          />
+        </div>
+      )}
+      <div className="slider-content">
+        <h3>Recommended</h3>
         <Slider { ...settings }>
           {pathname.includes('drinks')
             ? recomendations.map((d, index) => (
@@ -188,30 +214,19 @@ function DetailsCard({
             ))}
         </Slider>
       </div>
-      {video && (
-        <div>
-          <iframe
-            title="Veja no youtube"
-            data-testid="video"
-            width="420"
-            height="315"
-            src={ video }
-          />
-        </div>
-      )}
-      <div className="startRecipeBtn">
-        <button
-          type="button"
-          id="startRecipeBtn"
-          data-testid="start-recipe-btn"
-          onClick={ clickChange }
-        >
-          {
-            startOrInProgress()
-          }
-        </button>
-      </div>
-    </div>
+      <button
+        className="startRecipeBtn"
+        type="button"
+        id="startRecipeBtn"
+        data-testid="start-recipe-btn"
+        onClick={ clickChange }
+      >
+        {
+          startOrInProgress()
+        }
+      </button>
+
+    </>
   );
 }
 

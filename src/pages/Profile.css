@@ -1,0 +1,28 @@
+.email {
+  font-weight: 700;
+  margin-bottom: 50px;
+}
+
+.profile-btn {
+  align-items: center;
+  background: none;
+  border: none;
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  width: 217.44px;
+}
+
+.profile-btn img {
+  height: 39px;
+  width: 39px;
+}
+
+.profile-btn span {
+  color: rgb(121, 125, 134);
+  font-weight: 500;
+}
+
+hr {
+  width: 70%;
+}

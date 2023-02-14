@@ -2,13 +2,19 @@ import React, { useContext, useEffect, useState } from 'react';
 import DetailsCard from '../components/DetailsCard';
 import RecipesContext from '../context/RecipesContext';
 
+import './RecipeDetails.css';
+
 function RecipeDetails(props) {
   const { history, match: { params: { id } } } = props;
   const [recomendations, setRecomendations] = useState([]);
   const { recipeApi, setRecipeApi } = useContext(RecipesContext);
   const { location: { pathname } } = history;
 
+  const currPathName = pathname.split('/')[1];
+  const [isLoading, setIsLoading] = useState(false);
+
   const fetchRecipe = async () => {
+    setIsLoading(true);
     if (pathname.includes('meals')) {
       const data = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
       const dataResponse = await data.json();
@@ -24,6 +30,7 @@ function RecipeDetails(props) {
       const recoResponse = await dataRecommendation.json();
       setRecomendations(recoResponse.meals.slice(0, Number('6')));
     }
+    setIsLoading(false);
   };
 
   const ing = (Object.entries(recipeApi)
@@ -40,8 +47,18 @@ function RecipeDetails(props) {
     fetchRecipe();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <i
+          className="fa-solid fa-spinner loading-icon"
+        />
+      </div>
+    );
+  }
+
   return (
-    <main className="recipe-in-progress-content">
+    <main className="details-container">
       <DetailsCard
         name={ pathname.includes('drinks')
           ? recipeApi.strDrink : recipeApi.strMeal }
@@ -55,6 +72,7 @@ function RecipeDetails(props) {
         recomendations={ recomendations }
         pathname={ pathname }
         id={ id }
+        recipeApi={ recipeApi }
         type={ pathname.includes('drinks')
           ? 'drink' : 'meal' }
         nationality={ recipeApi.strArea ? recipeApi.strArea : null }

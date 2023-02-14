@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import shareIcon from '../images/shareIcon.svg';
 
 function DoneRecipeCard({ recipesArray, filter }) {
   const [copyMessage, setCopyMessage] = useState(false);
@@ -15,7 +14,7 @@ function DoneRecipeCard({ recipesArray, filter }) {
       },
     );
   };
-
+  console.log(recipesArray);
   const shareLink = (id, buttonId) => {
     copy(`http://localhost:3000/${id}`);
     setClickedButtonId(buttonId);
@@ -26,56 +25,64 @@ function DoneRecipeCard({ recipesArray, filter }) {
   if (filter === 'all') {
     filteredArray = recipesArray;
   } else if (filter === 'drink') {
-    filteredArray = recipesArray.filter((item) => item.idDrink);
+    filteredArray = recipesArray.filter((item) => item.type === 'drink');
   } else if (filter === 'meal') {
-    filteredArray = recipesArray.filter((item) => item.idMeal);
+    filteredArray = recipesArray.filter((item) => item.type === 'meal');
   }
   return (
     <>
       {filteredArray.map((item, index) => {
-        const arrayTags = item.strTags ? item.strTags.split(', ') : [];
+        const arrayTags = item.tags;
         return (
-          <div key={ index }>
+          <div
+            className="done-recipes-card"
+            key={ index }
+          >
+
             <Link
-              to={ item.idDrink ? `/drinks/${item.idDrink}` : `/meals/${item.idMeal}` }
-            >
-              <p data-testid={ `${index}-horizontal-name` }>
-                {item.strDrink || item.strMeal }
-              </p>
-            </Link>
-            <p data-testid={ `${index}-horizontal-top-text` }>
-              {`${item.strArea} - ${item.strCategory} ${item.strAlcoholic || ''}`}
-            </p>
-            <Link
-              to={ item.idDrink ? `/drinks/${item.idDrink}` : `/meals/${item.idMeal}` }
+              to={ `/${item.type}s/${item.id}` }
             >
               <img
                 className="recipeImg"
-                src={ item.strDrinkThumb || item.strMealThumb }
+                src={ item.image }
                 alt={ item.strDrink || item.strMeal }
                 data-testid={ `${index}-horizontal-image` }
               />
             </Link>
-            {
-              arrayTags.map((tag) => (
-                <p key={ tag } data-testid={ `${index}-${tag}-horizontal-tag` }>
-                  { `${tag}` }
-                </p>
-              ))
-            }
-            <span data-testid={ `${index}-horizontal-done-date` }>
-              23/06/2020
-            </span>
+            <div className="card-text">
+              <Link
+                to={ `/${item.type}s/${item.id}` }
+              >
+                <h2 data-testid={ `${index}-horizontal-name` }>
+                  { item.name }
+                </h2>
+              </Link>
+              <p data-testid={ `${index}-horizontal-top-text` }>
+                {`${item.nationality} - ${item.category} - ${item.alcoholicOrNot || ''}`}
+              </p>
+
+              <span data-testid={ `${index}-horizontal-done-date` }>
+                {`Done in: ${item.doneDate.split('T')[0]}`}
+              </span>
+              <section className="tags-container">
+                {
+                  arrayTags.map((tag) => (
+                    <p
+                      className="tag"
+                      key={ tag }
+                      data-testid={ `${index}-${tag}-horizontal-tag` }
+                    >
+                      { `${tag}` }
+                    </p>
+                  ))
+                }
+              </section>
+            </div>
             <button
-              onClick={ () => shareLink(item.idMeal
-                ? `meals/${item.idMeal}` : `drinks/${item.idDrink}`, index) }
+              onClick={ () => shareLink(`${item.type}s/${item.id}`) }
               type="button"
             >
-              <img
-                data-testid={ `${index}-horizontal-share-btn` }
-                src={ shareIcon }
-                alt="compartilhar"
-              />
+              <i className="fa-solid fa-share-nodes" />
               {
                 (clickedButtonId === index && copyMessage && 'Link copied!')
               }

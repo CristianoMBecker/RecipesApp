@@ -24,6 +24,11 @@
   color: rgba(252, 196, 54, 1);
 }
 
+.header-in-progress p {
+  color: rgba(252, 196, 54, 1);
+  font-size: 10px;
+}
+
 .header-in-progress h1 {
   color: white;
   font-size: 40px;

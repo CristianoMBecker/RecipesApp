@@ -124,13 +124,8 @@ function DetailsCard({
                   ? `meals/${id}` : `drinks/${id}`) }
                 type="button"
               >
-                <img
-                  src={ shareIcon }
-                  alt="compartilhar"
-                />
-                {
-                  (copyMessage && 'Link copied!')
-                }
+                <i className="fa-solid fa-share-nodes" />
+
               </button>
               <button
                 type="button"
@@ -139,14 +134,14 @@ function DetailsCard({
                   setIsfavorite(!isFavorite);
                 } }
               >
-
-                <img
-                  data-testid="favorite-btn"
-                  src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
-                  alt="favorite button"
-                />
+                { isFavorite ? <i className="fa-solid fa-heart" />
+                  : <i className="fa-regular fa-heart" /> }
               </button>
+              {
+                (copyMessage && <p>Link copied!</p>)
+              }
             </div>
+
           </nav>
           <h1 data-testid="recipe-title">{name}</h1>
         </div>

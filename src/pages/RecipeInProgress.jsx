@@ -170,7 +170,6 @@ function RecipeInProgress({ history }) {
               >
                 <i className="fa-solid fa-share-nodes" />
               </button>
-              {linkCopied && <p>Link copied!</p>}
               <button
                 onClick={ () => {
                   saveFavorite();
@@ -183,6 +182,8 @@ function RecipeInProgress({ history }) {
                     : <i className="fa-regular fa-heart" />
                 }
               </button>
+
+              {linkCopied && <p>Link copied!</p>}
             </div>
           </nav>
           <h1 data-testid="recipe-title">
